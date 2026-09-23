@@ -1,0 +1,972 @@
+{
+  "importedAt": "2026-09-23T06:22:00.985Z",
+  "source": "https://neetcode.io/practice/practice/neetcode150",
+  "description": "The NeetCode 150 problems not included in the Blind 75",
+  "problems": [
+    {
+      "title": "Valid Sudoku",
+      "category": "Arrays & Hashing",
+      "difficulty": "Medium",
+      "id": "valid-sudoku",
+      "statement": "You are given a `9 x 9` Sudoku board `board`. A Sudoku board is valid if the following rules are followed:\n\n1. Each row must contain the digits `1-9` without duplicates.\n2. Each column must contain the digits `1-9` without duplicates.\n3. Each of the nine `3 x 3` sub-boxes of the grid must contain the digits `1-9` without duplicates.\n\nReturn `true` if the Sudoku board is valid, otherwise return `false`\n\nNote: A board does not need to be full or be solvable to be valid.\n\n**Example 1:**\n\n```go\nInput: board =\n[[\"1\",\"2\",\".\",\".\",\"3\",\".\",\".\",\".\",\".\"],\n [\"4\",\".\",\".\",\"5\",\".\",\".\",\".\",\".\",\".\"],\n [\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\".\",\"3\"],\n [\"5\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"4\"],\n [\".\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"5\"],\n [\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"],\n [\".\",\".\",\".\",\".\",\".\",\".\",\"2\",\".\",\".\"],\n [\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"8\"],\n [\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]\n\nOutput: true\n```\n\n**Example 2:**\n\n```go\nInput: board =\n[[\"1\",\"2\",\".\",\".\",\"3\",\".\",\".\",\".\",\".\"],\n [\"4\",\".\",\".\",\"5\",\".\",\".\",\".\",\".\",\".\"],\n [\".\",\"9\",\"1\",\".\",\".\",\".\",\".\",\".\",\"3\"],\n [\"5\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"4\"],\n [\".\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"5\"],\n [\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"],\n [\".\",\".\",\".\",\".\",\".\",\".\",\"2\",\".\",\".\"],\n [\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"8\"],\n [\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]\n\nOutput: false\n```\n\nExplanation: There are two 1's in the top-left 3x3 sub-box.\n\n**Constraints:**\n* `board.length == 9`\n* `board[i].length == 9`\n* `board[i][j]` is a digit `1-9` or `'.'`.",
+      "starterCode": "func isValidSudoku(board [][]byte) bool {\n\n}\n",
+      "referenceCode": "func isValidSudoku(board [][]byte) bool {\n\tcols := make(map[int]map[byte]bool)\n\trows := make(map[int]map[byte]bool)\n\tsquares := make(map[[2]int]map[byte]bool) // key = (r /3, c /3)\n\tfor r := 0; r < 9; r++ {\n\t\tfor c := 0; c < 9; c++ {\n\t\t\tif board[r][c] == '.' {\n\t\t\t\tcontinue\n\t\t\t}\n\t\t\tif cols[c] == nil {\n\t\t\t\tcols[c] = make(map[byte]bool)\n\t\t\t}\n\t\t\tif rows[r] == nil {\n\t\t\t\trows[r] = make(map[byte]bool)\n\t\t\t}\n\t\t\tsquareKey := [2]int{r / 3, c / 3}\n\t\t\tif squares[squareKey] == nil {\n\t\t\t\tsquares[squareKey] = make(map[byte]bool)\n\t\t\t}\n\t\t\tif cols[c][board[r][c]] || rows[r][board[r][c]] || squares[squareKey][board[r][c]] {\n\t\t\t\treturn false\n\t\t\t}\n\t\t\tcols[c][board[r][c]] = true\n\t\t\trows[r][board[r][c]] = true\n\t\t\tsquares[squareKey][board[r][c]] = true\n\t\t}\n\t}\n\treturn true\n}\n",
+      "customTestCases": [
+        "board=[[\"1\",\"2\",\".\",\".\",\"3\",\".\",\".\",\".\",\".\"],[\"4\",\".\",\".\",\"5\",\".\",\".\",\".\",\".\",\".\"],[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\".\",\"3\"],[\"5\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"4\"],[\".\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"5\"],[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"],[\".\",\".\",\".\",\".\",\".\",\".\",\"2\",\".\",\".\"],[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"8\"],[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]",
+        "board=[[\"1\",\"2\",\".\",\".\",\"3\",\".\",\".\",\".\",\".\"],[\"4\",\".\",\".\",\"5\",\".\",\".\",\".\",\".\",\".\"],[\".\",\"9\",\"1\",\".\",\".\",\".\",\".\",\".\",\"3\"],[\"5\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"4\"],[\".\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"5\"],[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"],[\".\",\".\",\".\",\".\",\".\",\".\",\"2\",\".\",\".\"],[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"8\"],[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]"
+      ]
+    },
+    {
+      "title": "Two Integer Sum II",
+      "category": "Two Pointers",
+      "difficulty": "Medium",
+      "id": "two-integer-sum-ii",
+      "statement": "Given an array of integers `numbers` that is sorted in **non-decreasing order**.\n\nReturn the indices (**1-indexed**) of two numbers, `[index1, index2]`, such that they add up to a given target number `target` and `index1 < index2`. Note that `index1` and `index2` cannot be equal, therefore you may not use the same element twice.\n\nThere will always be **exactly one valid solution**.\n\nYour solution must use `O(1)` additional space.\n\n**Example 1:**\n\n```go\nInput: numbers = [1,2,3,4], target = 3\n\nOutput: [1,2]\n```\n\nExplanation:\nThe sum of 1 and 2 is 3. Since we are assuming a 1-indexed array, `index1` = 1, `index2` = 2. We return `[1, 2]`.\n\n**Constraints:**\n* `2 <= numbers.length <= 30000`\n* `-1000 <= numbers[i] <= 1000`\n* `-1000 <= target <= 1000`",
+      "starterCode": "func twoSum(numbers []int, target int) []int {\n\n}\n",
+      "referenceCode": "func twoSum(numbers []int, target int) []int {\n\tl, r := 0, len(numbers)-1\n\tfor l < r {\n\t\tcurSum := numbers[l] + numbers[r]\n\t\tif curSum > target {\n\t\t\tr--\n\t\t} else if curSum < target {\n\t\t\tl++\n\t\t} else {\n\t\t\treturn []int{l + 1, r + 1}\n\t\t}\n\t}\n\treturn nil\n}\n",
+      "customTestCases": [
+        "numbers=[1,2,3,4]\ntarget=3"
+      ]
+    },
+    {
+      "title": "Trapping Rain Water",
+      "category": "Two Pointers",
+      "difficulty": "Hard",
+      "id": "trapping-rain-water",
+      "statement": "You are given an array of non-negative integers `height` which represent an elevation map. Each value `height[i]` represents the height of a bar, which has a width of `1`.\n\nReturn the total amount of water that can be trapped between the bars.\n\n**Example 1:**\n\n```go\nInput: height = [0,2,0,3,1,0,1,3,2,1]\n\nOutput: 9\n```\n\n**Constraints:**\n* `1 <= height.length <= 20,000`\n* `0 <= height[i] <= 100,000`",
+      "starterCode": "func trap(height []int) int {\n\n}\n",
+      "referenceCode": "func trap(height []int) int {\n\tif len(height) == 0 {\n\t\treturn 0\n\t}\n\tl, r := 0, len(height)-1\n\tleftMax, rightMax := height[l], height[r]\n\tres := 0\n\tfor l < r {\n\t\tif leftMax < rightMax {\n\t\t\tl++\n\t\t\tleftMax = max(leftMax, height[l])\n\t\t\tres += leftMax - height[l]\n\t\t} else {\n\t\t\tr--\n\t\t\trightMax = max(rightMax, height[r])\n\t\t\tres += rightMax - height[r]\n\t\t}\n\t}\n\treturn res\n}\n",
+      "customTestCases": [
+        "height=[0,2,0,3,1,0,1,3,2,1]"
+      ]
+    },
+    {
+      "title": "Permutation in String",
+      "category": "Sliding Window",
+      "difficulty": "Medium",
+      "id": "permutation-string",
+      "statement": "You are given two strings `s1` and `s2`.\n    \nReturn `true` if `s2` contains a permutation of `s1`, or `false` otherwise. That means if a permutation of `s1` exists as a substring of `s2`, then return `true`.\n\nBoth strings only contain lowercase letters.\n\n**Example 1:**\n\n```go\nInput: s1 = \"abc\", s2 = \"lecabee\"\n\nOutput: true\n```\n\nExplanation: The substring `\"cab\"` is a permutation of `\"abc\"` and is present in `\"lecabee\"`.\n\n**Example 2:**\n\n```go\nInput: s1 = \"abc\", s2 = \"lecaabee\"\n\nOutput: false\n```\n\n**Constraints:**\n* `1 <= s1.length, s2.length <= 10000`",
+      "starterCode": "func checkInclusion(s1 string, s2 string) bool {\n\n}\n",
+      "referenceCode": "func checkInclusion(s1 string, s2 string) bool {\n\tif len(s1) > len(s2) {\n\t\treturn false\n\t}\n\ts1Count, s2Count := [26]int{}, [26]int{}\n\tfor i := 0; i < len(s1); i++ {\n\t\ts1Count[s1[i]-'a']++\n\t\ts2Count[s2[i]-'a']++\n\t}\n\tmatches := 0\n\tfor i := 0; i < 26; i++ {\n\t\tif s1Count[i] == s2Count[i] {\n\t\t\tmatches++\n\t\t}\n\t}\n\tl := 0\n\tfor r := len(s1); r < len(s2); r++ {\n\t\tif matches == 26 {\n\t\t\treturn true\n\t\t}\n\t\tindex := s2[r] - 'a'\n\t\ts2Count[index]++\n\t\tif s1Count[index] == s2Count[index] {\n\t\t\tmatches++\n\t\t} else if s1Count[index]+1 == s2Count[index] {\n\t\t\tmatches--\n\t\t}\n\t\tindex = s2[l] - 'a'\n\t\ts2Count[index]--\n\t\tif s1Count[index] == s2Count[index] {\n\t\t\tmatches++\n\t\t} else if s1Count[index]-1 == s2Count[index] {\n\t\t\tmatches--\n\t\t}\n\t\tl++\n\t}\n\treturn matches == 26\n}\n",
+      "customTestCases": [
+        "s1=\"ab\"\ns2=\"lecabee\"",
+        "s1=\"abc\"\ns2=\"lecaabee\""
+      ]
+    },
+    {
+      "title": "Sliding Window Maximum",
+      "category": "Sliding Window",
+      "difficulty": "Hard",
+      "id": "sliding-window-maximum",
+      "statement": "You are given an array of integers `nums` and an integer `k`. There is a sliding window of size `k` that starts at the left edge of the array. The window slides one position to the right until it reaches the right edge of the array.\n\nReturn a list that contains the maximum element in the window at each step.\n\n**Example 1:**\n\n```go\nInput: nums = [1,2,1,0,4,2,6], k = 3\n\nOutput: [2,2,4,4,6]\n\nExplanation:\nWindow position            Max\n---------------           -----\n[1  2  1] 0  4  2  6        2\n 1 [2  1  0] 4  2  6        2\n 1  2 [1  0  4] 2  6        4\n 1  2  1 [0  4  2] 6        4\n 1  2  1  0 [4  2  6]       6\n```\n\n**Constraints:**\n* `1 <= nums.length <= 100,000`\n* `-10,000 <= nums[i] <= 10,000`\n* `1 <= k <= nums.length`",
+      "starterCode": "func maxSlidingWindow(nums []int, k int) []int {\n    \n}\n",
+      "referenceCode": "func maxSlidingWindow(nums []int, k int) []int {\n    output := []int{}\n    q := []int{} // indices\n    l, r := 0, 0\n\n    for r < len(nums) {\n        for len(q) > 0 && nums[q[len(q)-1]] < nums[r] {\n            q = q[:len(q)-1]\n        }\n        q = append(q, r)\n\n        if l > q[0] {\n            q = q[1:]\n        }\n\n        if r+1 >= k {\n            output = append(output, nums[q[0]])\n            l++\n        }\n        r++\n    }\n\n    return output\n}\n",
+      "customTestCases": [
+        "nums=[1,2,1,0,4,2,6]\nk=3"
+      ]
+    },
+    {
+      "title": "Min Stack",
+      "category": "Stack",
+      "difficulty": "Medium",
+      "id": "minimum-stack",
+      "statement": "Design a stack class that supports the `push`, `pop`, `top`, and `getMin` operations.\n\n* `MinStack()` initializes the stack object.\n* `void push(int val)` pushes the element `val` onto the stack.\n* `void pop()` removes the element on the top of the stack.\n* `int top()` gets the top element of the stack.\n* `int getMin()` retrieves the minimum element in the stack.\n\nEach function should run in `O(1)` time.\n\n**Example 1:**\n\n```go\nInput: [\"MinStack\", \"push\", 1, \"push\", 2, \"push\", 0, \"getMin\", \"pop\", \"top\", \"getMin\"]\n\nOutput: [null,null,null,null,0,null,2,1]\n\nExplanation:\nMinStack minStack = new MinStack();\nminStack.push(1);\nminStack.push(2);\nminStack.push(0);\nminStack.getMin(); // return 0\nminStack.pop();\nminStack.top();    // return 2\nminStack.getMin(); // return 1\n```\n\n**Constraints:**\n* `-2^31 <= val <= 2^31 - 1`.\n* `pop`, `top` and `getMin` will always be called on **non-empty** stacks.\n* At most `3 × 10^4` calls will be made to `push`, `pop`, `top`, and `getMin`.",
+      "starterCode": "type MinStack struct {\n\n}\n\nfunc Constructor() MinStack {\n\n}\n\nfunc (this *MinStack) Push(val int) {\n\n}\n\nfunc (this *MinStack) Pop() {\n\n}\n\nfunc (this *MinStack) Top() int {\n\n}\n\nfunc (this *MinStack) GetMin() int {\n\n}\n",
+      "referenceCode": "type MinStack struct {\n\tstack    []int\n\tminStack []int\n}\n\nfunc Constructor() MinStack {\n\treturn MinStack{\n\t\tstack:    []int{},\n\t\tminStack: []int{},\n\t}\n}\n\nfunc (this *MinStack) Push(val int) {\n\tthis.stack = append(this.stack, val)\n\tif len(this.minStack) == 0 {\n\t\tval = val\n\t} else {\n\t\tval = min(val, this.minStack[len(this.minStack)-1])\n\t}\n\tthis.minStack = append(this.minStack, val)\n}\n\nfunc (this *MinStack) Pop() {\n\tthis.stack = this.stack[:len(this.stack)-1]\n\tthis.minStack = this.minStack[:len(this.minStack)-1]\n}\n\nfunc (this *MinStack) Top() int {\n\treturn this.stack[len(this.stack)-1]\n}\n\nfunc (this *MinStack) GetMin() int {\n\treturn this.minStack[len(this.minStack)-1]\n}\n",
+      "customTestCases": [
+        "[\"MinStack\", \"push\", 1, \"push\", 2, \"push\", 0, \"getMin\", \"pop\", \"top\", \"getMin\"]"
+      ]
+    },
+    {
+      "title": "Evaluate Reverse Polish Notation",
+      "category": "Stack",
+      "difficulty": "Medium",
+      "id": "evaluate-reverse-polish-notation",
+      "statement": "You are given an array of strings `tokens` that represents a **valid** arithmetic expression in [Reverse Polish Notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation).\n\nReturn the integer that represents the evaluation of the expression.\n\n* The operands may be integers or the results of other operations.\n* The operators include `'+'`, `'-'`, `'*'`, and `'/'`.\n* Assume that division between integers always truncates toward zero.\n\n**Example 1:**\n\n```go\nInput: tokens = [\"1\",\"2\",\"+\",\"3\",\"*\",\"4\",\"-\"]\n\nOutput: 5\n\nExplanation: ((1 + 2) * 3) - 4 = 5\n```\n\n**Constraints:**\n* `1 <= tokens.length <= 10000`.\n* tokens[i] is `\"+\"`, `\"-\"`, `\"*\"`, or `\"/\"`, or a string representing an integer in the range `[-200, 200]`.",
+      "starterCode": "func evalRPN(tokens []string) int {\n\n}\n",
+      "referenceCode": "func evalRPN(tokens []string) int {\n\tstack := []int{}\n\tfor _, c := range tokens {\n\t\tif c == \"+\" {\n\t\t\ta := stack[len(stack)-1]\n\t\t\tstack = stack[:len(stack)-1]\n\t\t\tb := stack[len(stack)-1]\n\t\t\tstack = stack[:len(stack)-1]\n\t\t\tstack = append(stack, a+b)\n\t\t} else if c == \"-\" {\n\t\t\ta := stack[len(stack)-1]\n\t\t\tstack = stack[:len(stack)-1]\n\t\t\tb := stack[len(stack)-1]\n\t\t\tstack = stack[:len(stack)-1]\n\t\t\tstack = append(stack, b-a)\n\t\t} else if c == \"*\" {\n\t\t\ta := stack[len(stack)-1]\n\t\t\tstack = stack[:len(stack)-1]\n\t\t\tb := stack[len(stack)-1]\n\t\t\tstack = stack[:len(stack)-1]\n\t\t\tstack = append(stack, a*b)\n\t\t} else if c == \"/\" {\n\t\t\ta := stack[len(stack)-1]\n\t\t\tstack = stack[:len(stack)-1]\n\t\t\tb := stack[len(stack)-1]\n\t\t\tstack = stack[:len(stack)-1]\n\t\t\tstack = append(stack, b/a)\n\t\t} else {\n\t\t\tnum, _ := strconv.Atoi(c)\n\t\t\tstack = append(stack, num)\n\t\t}\n\t}\n\treturn stack[0]\n}\n",
+      "customTestCases": [
+        "tokens=[\"2\",\"1\",\"+\",\"3\",\"*\"]"
+      ]
+    },
+    {
+      "title": "Daily Temperatures",
+      "category": "Stack",
+      "difficulty": "Medium",
+      "id": "daily-temperatures",
+      "statement": "You are given an array of integers `temperatures` where `temperatures[i]` represents the daily temperatures on the `ith` day.\n\nReturn an array `result` where `result[i]` is the number of days after the `ith` day before a warmer temperature appears on a future day. If there is no day in the future where a warmer temperature will appear for the `ith` day, set `result[i]` to `0` instead.\n\n**Example 1:**\n\n```go\nInput: temperatures = [30,38,30,36,35,40,28]\n\nOutput: [1,4,1,2,1,0,0]\n```\n\n**Example 2:**\n\n```go\nInput: temperatures = [22,21,20]\n\nOutput: [0,0,0]\n```\n\n**Constraints:**\n* `1 <= temperatures.length <= 100,000`.\n* `1 <= temperatures[i] <= 100`",
+      "starterCode": "func dailyTemperatures(temperatures []int) []int {\n\n}\n",
+      "referenceCode": "func dailyTemperatures(temperatures []int) []int {\n\tres := make([]int, len(temperatures))\n\tstack := [][]int{}  // pair: [temp, index]\n\n\tfor i, t := range temperatures {\n\t\tfor len(stack) > 0 && t > stack[len(stack)-1][0] {\n\t\t\tstackInd := stack[len(stack)-1][1]\n\t\t\tstack = stack[:len(stack)-1]\n\t\t\tres[stackInd] = i - stackInd\n\t\t}\n\t\tstack = append(stack, []int{t, i})\n\t}\n\n\treturn res\n}\n",
+      "customTestCases": [
+        "temperatures=[30,38,30,36,35,40,28]",
+        "temperatures=[22,21,20]"
+      ]
+    },
+    {
+      "title": "Car Fleet",
+      "category": "Stack",
+      "difficulty": "Medium",
+      "id": "car-fleet",
+      "statement": "There are `n` cars traveling to the same destination on a one-lane highway.\n\nYou are given two arrays of integers `position` and `speed`, both of length `n`. \n* `position[i]` is the position of the `ith car` (in miles)\n* `speed[i]` is the speed of the `ith` car (in miles per hour)\n\nThe **destination** is at position `target` miles.\n\nA car can **not** pass another car ahead of it. It can only catch up to another car and then drive at the same speed as the car ahead of it.\n\nA **car fleet** is a non-empty set of cars driving at the same position and same speed. A single car is also considered a car fleet.\n\nIf a car catches up to a car fleet the moment the fleet reaches the destination, then the car is considered to be part of the fleet.\n\nReturn the number of **different car fleets** that will arrive at the destination.\n\n**Example 1:**\n\n```go\nInput: target = 10, position = [1,4], speed = [3,2]\n\nOutput: 1\n```\n\nExplanation: The cars starting at 1 (speed 3) and 4 (speed 2) become a fleet, meeting each other at 10, the destination.\n\n**Example 2:**\n\n```go\nInput: target = 10, position = [4,1,0,7], speed = [2,2,1,1]\n\nOutput: 3\n```\n\nExplanation: The cars starting at 4 and 7 become a fleet at position 10. The cars starting at 1 and 0 never catch up to the car ahead of them. Thus, there are 3 car fleets that will arrive at the destination.\n\n**Constraints:**\n* `n == position.length == speed.length`.\n* `1 <= n <= 100,000`\n* `0 < target <= 1,000,000`\n* `1 <= speed[i] <= 1,000,000`\n* `0 <= position[i] < target`\n* All the values of `position` are **unique**.",
+      "starterCode": "func carFleet(target int, position []int, speed []int) int {\n\n}\n",
+      "referenceCode": "func carFleet(target int, position []int, speed []int) int {\n\tpair := make([][]int, len(position))\n\tfor i := range position {\n\t\tpair[i] = []int{position[i], speed[i]}\n\t}\n\n\tsort.Slice(pair, func(i, j int) bool {\n\t\treturn pair[i][0] > pair[j][0]\n\t})\n\n\tstack := []float64{}\n\tfor _, ps := range pair {  // Reverse Sorted Order\n\t\tp, s := ps[0], ps[1]\n\t\ttime := float64(target-p) / float64(s)\n\t\tstack = append(stack, time)\n\t\tif len(stack) >= 2 && stack[len(stack)-1] <= stack[len(stack)-2] {\n\t\t\tstack = stack[:len(stack)-1]\n\t\t}\n\t}\n\n\treturn len(stack)\n}\n",
+      "customTestCases": [
+        "target=10\nposition=[1,4]\nspeed=[3,2]",
+        "target=10\nposition=[4,1,0,7]\nspeed=[2,2,1,1]"
+      ]
+    },
+    {
+      "title": "Largest Rectangle In Histogram",
+      "category": "Stack",
+      "difficulty": "Hard",
+      "id": "largest-rectangle-in-histogram",
+      "statement": "You are given an array of integers `heights` where `heights[i]` represents the height of a bar. The width of each bar is `1`.\n    \nReturn the area of the largest rectangle that can be formed among the bars.\n\nNote: This chart is known as a [histogram](https://en.wikipedia.org/wiki/Histogram).\n\n**Example 1:**\n\n```go\nInput: heights = [7,1,7,2,2,4]\n\nOutput: 8\n```\n\n**Example 2:**\n\n```go\nInput: heights = [1,3,7]\n\nOutput: 7\n```\n\n**Constraints:**\n* `1 <= heights.length <= 100,000`.\n* `0 <= heights[i] <= 10,000`",
+      "starterCode": "func largestRectangleArea(heights []int) int {\n\n}\n",
+      "referenceCode": "func largestRectangleArea(heights []int) int {\n\tmaxArea := 0\n\tstack := [][]int{}  // pair: (index, height)\n\n\tfor i, h := range heights {\n\t\tstart := i\n\t\tfor len(stack) > 0 && stack[len(stack)-1][1] > h {\n\t\t\tindex := stack[len(stack)-1][0]\n\t\t\theight := stack[len(stack)-1][1]\n\t\t\tstack = stack[:len(stack)-1]\n\t\t\tarea := height * (i - index)\n\t\t\tif area > maxArea {\n\t\t\t\tmaxArea = area\n\t\t\t}\n\t\t\tstart = index\n\t\t}\n\t\tstack = append(stack, []int{start, h})\n\t}\n\n\tfor _, pair := range stack {\n\t\ti, h := pair[0], pair[1]\n\t\tarea := h * (len(heights) - i)\n\t\tif area > maxArea {\n\t\t\tmaxArea = area\n\t\t}\n\t}\n\n\treturn maxArea\n}\n",
+      "customTestCases": [
+        "heights=[7,1,7,2,2,4]",
+        "heights=[1,3,7]"
+      ]
+    },
+    {
+      "title": "Binary Search",
+      "category": "Binary Search",
+      "difficulty": "Easy",
+      "id": "binary-search",
+      "statement": "You are given an array of **distinct** integers `nums`, sorted in ascending order, and an integer `target`.\n    \nImplement a function to search for `target` within `nums`. If it exists, then return its index, otherwise, return `-1`.\n\nYour solution must run in `O(log n)` time.\n\n**Example 1:**\n\n```go\nInput: nums = [-1,0,2,4,6,8], target = 4\n\nOutput: 3\n```\n\n**Example 2:**\n\n```go\nInput: nums = [-1,0,2,4,6,8], target = 3\n\nOutput: -1\n```\n\n**Constraints:**\n* `1 <= nums.length <= 10000`.\n* `-10000 < nums[i], target < 10000`\n* All the integers in `nums` are **unique**.",
+      "starterCode": "func search(nums []int, target int) int {\n\n}\n",
+      "referenceCode": "func search(nums []int, target int) int {\n\tl, r := 0, len(nums)-1\n\n\tfor l <= r {\n\t\tm := l + ((r - l) / 2)  // (l + r) // 2 can lead to overflow\n\t\tif nums[m] > target {\n\t\t\tr = m - 1\n\t\t} else if nums[m] < target {\n\t\t\tl = m + 1\n\t\t} else {\n\t\t\treturn m\n\t\t}\n\t}\n\n\treturn -1\n}\n",
+      "customTestCases": [
+        "nums=[-1,0,2,4,6,8]\ntarget=4",
+        "nums=[-1,0,2,4,6,8]\ntarget=3"
+      ]
+    },
+    {
+      "title": "Search a 2D Matrix",
+      "category": "Binary Search",
+      "difficulty": "Medium",
+      "id": "search-2d-matrix",
+      "statement": "You are given an `m x n` 2-D integer array `matrix` and an integer `target`.\n\n* Each row in `matrix` is sorted in *non-decreasing* order.\n* The first integer of every row is greater than the last integer of the previous row.\n\nReturn `true` if `target` exists within `matrix` or `false` otherwise.\n\nCan you write a solution that runs in `O(log(m * n))` time?\n\n**Example 1:**\n\n```go\nInput: matrix = [[1,2,4,8],[10,11,12,13],[14,20,30,40]], target = 10\n\nOutput: true\n```\n\n**Example 2:**\n\n```go\nInput: matrix = [[1,2,4,8],[10,11,12,13],[14,20,30,40]], target = 15\n\nOutput: false\n```\n\n**Constraints:**\n* `m == matrix.length`\n* `n == matrix[i].length`\n* `1 <= m, n <= 100`\n* `-10000 <= matrix[i][j], target <= 10000`",
+      "starterCode": "func searchMatrix(matrix [][]int, target int) bool {\n\n}\n",
+      "referenceCode": "func searchMatrix(matrix [][]int, target int) bool {\n\tROWS, COLS := len(matrix), len(matrix[0])\n\n\ttop, bot := 0, ROWS-1\n\tfor top <= bot {\n\t\trow := (top + bot) / 2\n\t\tif target > matrix[row][COLS-1] {\n\t\t\ttop = row + 1\n\t\t} else if target < matrix[row][0] {\n\t\t\tbot = row - 1\n\t\t} else {\n\t\t\tbreak\n\t\t}\n\t}\n\n\tif !(top <= bot) {\n\t\treturn false\n\t}\n\n\trow := (top + bot) / 2\n\tl, r := 0, COLS-1\n\tfor l <= r {\n\t\tm := (l + r) / 2\n\t\tif target > matrix[row][m] {\n\t\t\tl = m + 1\n\t\t} else if target < matrix[row][m] {\n\t\t\tr = m - 1\n\t\t} else {\n\t\t\treturn true\n\t\t}\n\t}\n\n\treturn false\n}\n",
+      "customTestCases": [
+        "matrix=[[1,3,5,7],[10,11,16,20],[23,30,34,60]]\ntarget=3",
+        "matrix=[[1,3,5,7],[10,11,16,20],[23,30,34,60]]\ntarget=13"
+      ]
+    },
+    {
+      "title": "Koko Eating Bananas",
+      "category": "Binary Search",
+      "difficulty": "Medium",
+      "id": "eating-bananas",
+      "statement": "You are given an integer array `piles` where `piles[i]` is the number of bananas in the `ith` pile. You are also given an integer `h`, which represents the number of hours you have to eat all the bananas.\n\nYou may decide your bananas-per-hour eating rate of `k`. Each hour, you may choose a pile of bananas and eats `k` bananas from that pile. If the pile has less than `k` bananas, you may finish eating the pile but you can not eat from another pile in the same hour.\n\nReturn the minimum integer `k` such that you can eat all the bananas within `h` hours.\n\n**Example 1:**\n\n```go\nInput: piles = [1,4,3,2], h = 9\n\nOutput: 2\n```\n\nExplanation: With an eating rate of 2, you can eat the bananas in 6 hours. With an eating rate of 1, you would need 10 hours to eat all the bananas (which exceeds h=9), thus the minimum eating rate is 2.\n\n**Example 2:**\n\n```go\nInput: piles = [25,10,23,4], h = 4\n\nOutput: 25\n```\n\n**Constraints:**\n* `1 <= piles.length <= 10,000`\n* `piles.length <= h <= 1,000,000,000`\n* `1 <= piles[i] <= 1,000,000,000`",
+      "starterCode": "func minEatingSpeed(piles []int, h int) int {\n\n}\n",
+      "referenceCode": "func minEatingSpeed(piles []int, h int) int {\n    l, r := 1, max(piles)\n    res := r\n    \n    for l <= r {\n        k := (l + r) / 2\n        totalTime := 0\n        for _, p := range piles {\n            totalTime += int(math.Ceil(float64(p) / float64(k)))\n        }\n        \n        if totalTime <= h {\n            res = k\n            r = k - 1\n        } else {\n            l = k + 1\n        }\n    }\n    \n    return res\n}\n\nfunc max(piles []int) int {\n    maxVal := piles[0]\n    for _, val := range piles {\n        if val > maxVal {\n            maxVal = val\n        }\n    }\n    return maxVal\n}\n",
+      "customTestCases": [
+        "piles=[1,4,3,2]\nh=9",
+        "piles=[25,10,23,4]\nh=4"
+      ]
+    },
+    {
+      "title": "Time Based Key-Value Store",
+      "category": "Binary Search",
+      "difficulty": "Medium",
+      "id": "time-based-key-value-store",
+      "statement": "Design a time-based key-value data structure that can store multiple values for the same key at different time stamps and retrieve the key's value at a certain timestamp.\n\nImplement the `TimeMap` class:\n* `TimeMap()` Initializes the object of the data structure.\n* `void set(String key, String value, int timestamp)` Stores the key `key` with the value `value` at the given time `timestamp`.\n* `String get(String key, int timestamp)` Returns a value such that `set` was called previously, with `timestamp_prev <= timestamp`. If there are multiple such values, it returns the value associated with the largest `timestamp_prev`. If there are no values, it returns `\"\"`.\n\n**Example 1:**\n\n```go\nInput:\n[\"TimeMap\", \"set\", [\"alice\", \"happy\", 1], \"get\", [\"alice\", 1], \"get\", [\"alice\", 2], \"set\", [\"alice\", \"sad\", 3], \"get\", [\"alice\", 3]]\n\nOutput:\n[null, null, \"happy\", \"happy\", null, \"sad\"]\n\nExplanation:\nTimeMap timeMap = new TimeMap();\ntimeMap.set(\"alice\", \"happy\", 1);  // store the key \"alice\" and value \"happy\" along with timestamp = 1.\ntimeMap.get(\"alice\", 1);           // return \"happy\"\ntimeMap.get(\"alice\", 2);           // return \"happy\", there is no value stored for timestamp 2, thus we return the value at timestamp 1.\ntimeMap.set(\"alice\", \"sad\", 3);    // store the key \"alice\" and value \"sad\" along with timestamp = 3.\ntimeMap.get(\"alice\", 3);           // return \"sad\"\n```\n\n**Constraints:**\n* `1 <= key.length, value.length <= 100`\n* `key` and `value` only include lowercase English letters and digits.\n* `0 <= timestamp <= 10^7`\n* All the timestamps of `set` are strictly increasing.\n* At most `2 * 10^5` calls will be made to `set` and `get`.",
+      "starterCode": "type TimeMap struct {\n\n}\n\nfunc Constructor() TimeMap {\n\n}\n\nfunc (this *TimeMap) Set(key string, value string, timestamp int) {\n\n}\n\nfunc (this *TimeMap) Get(key string, timestamp int) string {\n\n}\n",
+      "referenceCode": "type TimeMap struct {\n\tkeyStore map[string][][]interface{}  // key : list of [value, timestamp] pairs\n}\n\nfunc Constructor() TimeMap {\n\treturn TimeMap{\n\t\tkeyStore: make(map[string][][]interface{}),\n\t}\n}\n\nfunc (this *TimeMap) Set(key string, value string, timestamp int) {\n\tif _, exists := this.keyStore[key]; !exists {\n\t\tthis.keyStore[key] = [][]interface{}{}\n\t}\n\tthis.keyStore[key] = append(this.keyStore[key], []interface{}{value, timestamp})\n}\n\nfunc (this *TimeMap) Get(key string, timestamp int) string {\n\tres := \"\"\n\tvalues, exists := this.keyStore[key]\n\tif !exists {\n\t\tvalues = [][]interface{}{}\n\t}\n\n\tl, r := 0, len(values)-1\n\tfor l <= r {\n\t\tm := (l + r) / 2\n\t\tif values[m][1].(int) <= timestamp {\n\t\t\tres = values[m][0].(string)\n\t\t\tl = m + 1\n\t\t} else {\n\t\t\tr = m - 1\n\t\t}\n\t}\n\n\treturn res\n}\n",
+      "customTestCases": [
+        "[\"TimeMap\", \"set\", [\"alice\", \"happy\", 1], \"get\", [\"alice\", 1], \"get\", [\"alice\", 2], \"set\", [\"alice\", \"sad\", 3], \"get\", [\"alice\", 3]]"
+      ]
+    },
+    {
+      "title": "Median of Two Sorted Arrays",
+      "category": "Binary Search",
+      "difficulty": "Hard",
+      "id": "median-of-two-sorted-arrays",
+      "statement": "You are given two integer arrays `nums1` and `nums2` of size `m` and `n` respectively, where each is sorted in ascending order. Return the [median](https://en.wikipedia.org/wiki/Median) value among all elements of the two arrays.\n\nYour solution should run in `O(log (m+n))` time.\n\n**Example 1:**\n\n```go\nInput: nums1 = [1,2], nums2 = [3]\n\nOutput: 2.0\n```\n\nExplanation: Among `[1, 2, 3]` the median is `2`.\n\n**Example 2:**\n\n```go\nInput: nums1 = [1,3], nums2 = [2,4]\n\nOutput: 2.5\n```\n\nExplanation: Among `[1, 2, 3, 4]` the median is `(2 + 3) / 2 = 2.5`.\n\n**Constraints:**\n* `nums1.length == m`\n* `nums2.length == n`\n* `0 <= m <= 1000`\n* `0 <= n <= 1000`\n* `1 <= m + n <= 2000`\n* `-10^6 <= nums1[i], nums2[i] <= 10^6`",
+      "starterCode": "func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {\n\n}\n",
+      "referenceCode": "func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {\n    A, B := nums1, nums2\n    total := len(nums1) + len(nums2)\n    half := total / 2\n    \n    if len(B) < len(A) {\n        A, B = B, A\n    }\n    \n    l, r := 0, len(A)\n    \n    for l <= r {\n        i := (l + r) / 2\n        j := half - i\n        \n        Aleft := math.Inf(-1)\n        if i > 0 {\n            Aleft = float64(A[i-1])\n        }\n        \n        Aright := math.Inf(1)\n        if i < len(A) {\n            Aright = float64(A[i])\n        }\n        \n        Bleft := math.Inf(-1)\n        if j > 0 {\n            Bleft = float64(B[j-1])\n        }\n        \n        Bright := math.Inf(1)\n        if j < len(B) {\n            Bright = float64(B[j])\n        }\n        \n        if Aleft <= Bright && Bleft <= Aright {\n            if total%2 == 1 {\n                return math.Min(Aright, Bright)\n            }\n            return (math.Max(Aleft, Bleft) + math.Min(Aright, Bright)) / 2\n        } else if Aleft > Bright {\n            r = i - 1\n        } else {\n            l = i + 1\n        }\n    }\n    \n    return 0\n}\n",
+      "customTestCases": [
+        "nums1=[1,2]\nnums2=[3]",
+        "nums1=[1,3]\nnums2=[2,4]"
+      ]
+    },
+    {
+      "title": "Copy Linked List with Random Pointer",
+      "category": "Linked List",
+      "difficulty": "Medium",
+      "id": "copy-linked-list-with-random-pointer",
+      "statement": "You are given the head of a linked list of length `n`. Unlike a singly linked list, each node contains an additional pointer `random`, which may point to any node in the list, or `null`.\n\nCreate a **deep copy** of the list. \n\nThe deep copy should consist of exactly `n` **new** nodes, each including:\n* The original value `val` of the copied node\n* A `next` pointer to the new node corresponding to the `next` pointer of the original node\n* A `random` pointer to the new node corresponding to the `random` pointer of the original node\n\nNote: None of the pointers in the new list should point to nodes in the original list.\n\n*Return the head of the copied linked list.*\n\nIn the examples, the linked list is represented as a list of `n` nodes. Each node is represented as a pair of `[val, random_index]` where `random_index` is the index of the node (0-indexed) that the `random` pointer points to, or `null` if it does not point to any node.\n\n**Example 1:**\n\n```go\nInput: head = [[3,null],[7,3],[4,0],[5,1]]\n\nOutput: [[3,null],[7,3],[4,0],[5,1]]\n```\n\n**Example 2:**\n\n```go\nInput: head = [[1,null],[2,2],[3,2]]\n\nOutput: [[1,null],[2,2],[3,2]]\n```\n\n**Constraints:**\n* `0 <= n <= 100`\n* `-100 <= Node.val <= 100`\n* Node values are not guaranteed to be unique.\n* `random` is `null` or is pointing to some node in the linked list.",
+      "starterCode": "/**\n * Definition for a Node.\n * type Node struct {\n *     Val int\n *     Next *Node\n *     Random *Node\n * }\n */\n\nfunc copyRandomList(head *Node) *Node {\n    \n}\n",
+      "referenceCode": "func copyRandomList(head *Node) *Node {\n    if head == nil { return nil }\n    for current := head; current != nil; {\n        next := current.Next\n        current.Next = &Node{Val: current.Val, Next: next}\n        current = next\n    }\n    for current := head; current != nil; current = current.Next.Next {\n        if current.Random != nil { current.Next.Random = current.Random.Next }\n    }\n    copiedHead := head.Next\n    for current := head; current != nil; {\n        copied := current.Next\n        current.Next = copied.Next\n        if copied.Next != nil { copied.Next = copied.Next.Next }\n        current = current.Next\n    }\n    return copiedHead\n}\n",
+      "customTestCases": [
+        "head=[[3,null],[7,3],[4,0],[5,1]]",
+        "head=[[1,null],[2,2],[3,2]]"
+      ]
+    },
+    {
+      "title": "Add Two Numbers",
+      "category": "Linked List",
+      "difficulty": "Medium",
+      "id": "add-two-numbers",
+      "statement": "You are given two **non-empty** linked lists, `l1` and `l2`, where each represents a non-negative integer.\n    \nThe digits are stored in **reverse order**, e.g. the number 321 is represented as `1 -> 2 -> 3 ->` in the linked list.\n\nEach of the nodes contains a single digit. You may assume the two numbers do not contain any leading zero, except the number `0` itself.\n\nReturn the sum of the two numbers as a linked list.\n\n**Example 1:**\n\n```go\nInput: l1 = [1,2,3], l2 = [4,5,6]\n\nOutput: [5,7,9]\n\nExplanation: 321 + 654 = 975.\n```\n\n**Example 2:**\n\n```go\nInput: l1 = [9], l2 = [9]\n\nOutput: [8,1]\n```\n\n**Constraints:**\n* `1 <= l1.length, l2.length <= 100`.\n* `0 <= Node.val <= 9`",
+      "starterCode": "/**\n * Definition for singly-linked list.\n * type ListNode struct {\n *     Val int\n *     Next *ListNode\n * }\n */\n\nfunc addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for singly-linked list.\n * type ListNode struct {\n *     Val int\n *     Next *ListNode\n * }\n */\n\nfunc addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {\n    dummy := &ListNode{}\n    cur := dummy\n    carry := 0\n    \n    for l1 != nil || l2 != nil || carry != 0 {\n        v1 := 0\n        if l1 != nil {\n            v1 = l1.Val\n        }\n        \n        v2 := 0\n        if l2 != nil {\n            v2 = l2.Val\n        }\n        \n        // new digit\n        val := v1 + v2 + carry\n        carry = val / 10\n        val = val % 10\n        cur.Next = &ListNode{Val: val}\n        \n        // update ptrs\n        cur = cur.Next\n        if l1 != nil {\n            l1 = l1.Next\n        }\n        if l2 != nil {\n            l2 = l2.Next\n        }\n    }\n    \n    return dummy.Next\n}\n",
+      "customTestCases": [
+        "l1=[1,2,3]\nl2=[4,5,6]",
+        "l1=[9]\nl2=[9]"
+      ]
+    },
+    {
+      "title": "Find the Duplicate Number",
+      "category": "Linked List",
+      "difficulty": "Medium",
+      "id": "find-duplicate-integer",
+      "statement": "You are given an array of integers `nums` containing `n + 1` integers. Each integer in `nums` is in the range `[1, n]` inclusive.\n\nThere is exactly **one repeated integer** in `nums`, and every other integer appears at most once.\n\nReturn the repeated integer.\n\n**Example 1:**\n\n```go\nInput: nums = [1,2,3,2,2]\n\nOutput: 2\n```\n\n**Example 2:**\n\n```go\nInput: nums = [1,2,3,4,4]\n\nOutput: 4\n```\n\nFollow-up: Can you solve the problem **without** modifying the array `nums` and using `O(1)` extra space?\n\n**Constraints:**\n* `1 <= n <= 10,000`\n* `nums.length == n + 1`\n* `1 <= nums[i] <= n`",
+      "starterCode": "func findDuplicate(nums []int) int {\n    \n}\n",
+      "referenceCode": "func findDuplicate(nums []int) int {\n    slow, fast := 0, 0\n    \n    for {\n        slow = nums[slow]\n        fast = nums[nums[fast]]\n        if slow == fast {\n            break\n        }\n    }\n    \n    slow2 := 0\n    for {\n        slow = nums[slow]\n        slow2 = nums[slow2]\n        if slow == slow2 {\n            return slow\n        }\n    }\n}\n",
+      "customTestCases": [
+        "nums=[1,2,3,2,2]",
+        "nums=[1,2,3,4,4]"
+      ]
+    },
+    {
+      "title": "LRU Cache",
+      "category": "Linked List",
+      "difficulty": "Medium",
+      "id": "lru-cache",
+      "statement": "Implement the [Least Recently Used (LRU)](https://en.wikipedia.org/wiki/Cache_replacement_policies#LRU) cache class `LRUCache`. The class should support the following operations\n\n* `LRUCache(int capacity)` Initialize the LRU cache of size `capacity`.\n* `int get(int key)` Return the value corresponding to the `key` if the `key` exists, otherwise return `-1`.\n* `void put(int key, int value)` Update the `value` of the `key` if the `key` exists. Otherwise, add the `key`-`value` pair to the cache. If the introduction of the new pair causes the cache to exceed its capacity, remove the least recently used key.\n\nA key is considered used if a `get` or a `put` operation is called on it.\n\nEnsure that `get` and `put` each run in `O(1)` average time complexity.\n\n**Example 1:**\n\n```go\nInput:\n[\"LRUCache\", [2], \"put\", [1, 10],  \"get\", [1], \"put\", [2, 20], \"put\", [3, 30], \"get\", [2], \"get\", [1]]\n\nOutput:\n[null, null, 10, null, null, 20, -1]\n\nExplanation:\nLRUCache lRUCache = new LRUCache(2);\nlRUCache.put(1, 10);  // cache: {1=10}\nlRUCache.get(1);      // return 10\nlRUCache.put(2, 20);  // cache: {1=10, 2=20}\nlRUCache.put(3, 30);  // cache: {2=20, 3=30}, key=1 was evicted\nlRUCache.get(2);      // returns 20 \nlRUCache.get(1);      // return -1 (not found)\n```\n\n**Constraints:**\n* `1 <= capacity <= 3000`\n* `0 <= key <= 10^4`\n* `0 <= value <= 10^5`\n* At most `2 * 10^5` calls will be made to `get` and `put`.",
+      "starterCode": "type LRUCache struct {\n    \n}\n\nfunc Constructor(capacity int) LRUCache {\n    \n}\n\nfunc (this *LRUCache) Get(key int) int {\n    \n}\n\nfunc (this *LRUCache) Put(key int, value int) {\n    \n}\n",
+      "referenceCode": "type Node struct {\n    key, val   int\n    prev, next *Node\n}\n\ntype LRUCache struct {\n    cap   int\n    cache map[int]*Node\n    left  *Node\n    right *Node\n}\n\nfunc Constructor(capacity int) LRUCache {\n    lru := LRUCache{\n        cap:   capacity,\n        cache: make(map[int]*Node),\n        left:  &Node{key: 0, val: 0},\n        right: &Node{key: 0, val: 0},\n    }\n    lru.left.next = lru.right\n    lru.right.prev = lru.left\n    return lru\n}\n\nfunc (this *LRUCache) remove(node *Node) {\n    prev, nxt := node.prev, node.next\n    prev.next, nxt.prev = nxt, prev\n}\n\nfunc (this *LRUCache) insert(node *Node) {\n    prev, nxt := this.right.prev, this.right\n    prev.next = node\n    nxt.prev = node\n    node.next = nxt\n    node.prev = prev\n}\n\nfunc (this *LRUCache) Get(key int) int {\n    if node, exists := this.cache[key]; exists {\n        this.remove(node)\n        this.insert(node)\n        return node.val\n    }\n    return -1\n}\n\nfunc (this *LRUCache) Put(key int, value int) {\n    if node, exists := this.cache[key]; exists {\n        this.remove(node)\n    }\n    \n    this.cache[key] = &Node{key: key, val: value}\n    this.insert(this.cache[key])\n    \n    if len(this.cache) > this.cap {\n        lru := this.left.next\n        this.remove(lru)\n        delete(this.cache, lru.key)\n    }\n}\n",
+      "customTestCases": [
+        "[\"LRUCache\", [2], \"put\", [1, 10],  \"get\", [1], \"put\", [2, 20], \"put\", [3, 30], \"get\", [2], \"get\", [1]]"
+      ]
+    },
+    {
+      "title": "Reverse Nodes in K-Group",
+      "category": "Linked List",
+      "difficulty": "Hard",
+      "id": "reverse-nodes-in-k-group",
+      "statement": "You are given the head of a singly linked list `head` and a positive integer `k`.\n\nYou must reverse the first `k` nodes in the linked list, and then reverse the next `k` nodes, and so on. If there are fewer than `k` nodes left, leave the nodes as they are.\n\nReturn the modified list after reversing the nodes in each group of `k`.\n\nYou are only allowed to modify the nodes' `next` pointers, not the values of the nodes.\n\n**Example 1:**\n\n```go\nInput: head = [1,2,3,4,5,6], k = 3\n\nOutput: [3,2,1,6,5,4]\n```\n\n**Example 2:**\n\n```go\nInput: head = [1,2,3,4,5], k = 3\n\nOutput: [3,2,1,4,5]\n```\n\n**Constraints:**\n* The length of the linked list is `n`.\n* `1 <= k <= n <= 5000`\n* `0 <= Node.val <= 100`",
+      "starterCode": "/**\n * Definition for singly-linked list.\n * type ListNode struct {\n *     Val int\n *     Next *ListNode\n * }\n */\n\nfunc reverseKGroup(head *ListNode, k int) *ListNode {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for singly-linked list.\n * type ListNode struct {\n *     Val int\n *     Next *ListNode\n * }\n */\n\n func reverseKGroup(head *ListNode, k int) *ListNode {\n    dummy := &ListNode{Val: 0, Next: head}\n    groupPrev := dummy\n    \n    for {\n        kth := getKth(groupPrev, k)\n        if kth == nil {\n            break\n        }\n        groupNext := kth.Next\n        \n        prev, curr := kth.Next, groupPrev.Next\n        for curr != groupNext {\n            tmp := curr.Next\n            curr.Next = prev\n            prev = curr\n            curr = tmp\n        }\n        \n        tmp := groupPrev.Next\n        groupPrev.Next = kth\n        groupPrev = tmp\n    }\n    \n    return dummy.Next\n}\n\nfunc getKth(curr *ListNode, k int) *ListNode {\n    for curr != nil && k > 0 {\n        curr = curr.Next\n        k--\n    }\n    return curr\n}\n",
+      "customTestCases": [
+        "head=[1,2,3,4,5,6]\nk=3",
+        "head=[1,2,3,4,5]\nk=3"
+      ]
+    },
+    {
+      "title": "Diameter of Binary Tree",
+      "category": "Trees",
+      "difficulty": "Easy",
+      "id": "binary-tree-diameter",
+      "statement": "The **diameter** of a binary tree is defined as the **length** of the longest path between *any two nodes within the tree*. The path does not necessarily have to pass through the root.\n    \nThe **length** of a path between two nodes in a binary tree is the number of edges between the nodes. Note that the path can *not* include the same node twice.\n\nGiven the root of a binary tree `root`, return the **diameter** of the tree.\n\n**Example 1:**\n\n```go\nInput: root = [1,null,2,3,4,5]\n\nOutput: 3\n```\n\nExplanation: 3 is the length of the path `[1,2,3,5]` or `[5,3,2,4]`.\n\n**Example 2:**\n\n```go\nInput: root = [1,2,3]\n\nOutput: 2\n```\n\n**Constraints:**\n* `1 <= number of nodes in the tree <= 100`\n* `-100 <= Node.val <= 100`",
+      "starterCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc diameterOfBinaryTree(root *TreeNode) int {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc diameterOfBinaryTree(root *TreeNode) int {\n    res := 0\n    \n    var dfs func(root *TreeNode) int\n    dfs = func(root *TreeNode) int {\n        if root == nil {\n            return 0\n        }\n        \n        left := dfs(root.Left)\n        right := dfs(root.Right)\n        res = max(res, left+right)\n        \n        return 1 + max(left, right)\n    }\n    \n    dfs(root)\n    return res\n}\n\nfunc max(a, b int) int {\n    if a > b {\n        return a\n    }\n    return b\n}\n",
+      "customTestCases": [
+        "root=[1,null,2,3,4,5]",
+        "root=[1,2,3]"
+      ]
+    },
+    {
+      "title": "Balanced Binary Tree",
+      "category": "Trees",
+      "difficulty": "Easy",
+      "id": "balanced-binary-tree",
+      "statement": "Given a binary tree, return `true` if it is **height-balanced** and `false` otherwise.\n\nA **height-balanced** binary tree is defined as a binary tree in which the left and right subtrees of every node differ in height by no more than 1.\n\n**Example 1:**\n\n```go\nInput: root = [1,2,3,null,null,4]\n\nOutput: true\n```\n\n**Example 2:**\n\n```go\nInput: root = [1,2,3,null,null,4,null,5]\n\nOutput: false\n```\n\n**Example 3:**\n\n```go\nInput: root = []\n\nOutput: true\n```\n\n**Constraints:**\n* The number of nodes in the tree is in the range `[0, 1000]`.\n* `-1000 <= Node.val <= 1000`",
+      "starterCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc isBalanced(root *TreeNode) bool {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc isBalanced(root *TreeNode) bool {\n    balanced, _ := dfs(root)\n    return balanced\n}\n\nfunc dfs(root *TreeNode) (bool, int) {\n    if root == nil {\n        return true, 0\n    }\n\n    leftBalanced, leftHeight := dfs(root.Left)\n    rightBalanced, rightHeight := dfs(root.Right)\n\n    balanced := leftBalanced && rightBalanced && abs(leftHeight-rightHeight) <= 1\n    return balanced, 1 + max(leftHeight, rightHeight)\n}\n\nfunc max(a, b int) int {\n    if a > b {\n        return a\n    }\n    return b\n}\n\nfunc abs(a int) int {\n    if a < 0 {\n        return -a\n    }\n    return a\n}\n",
+      "customTestCases": [
+        "root=[1,2,3,null,null,4]",
+        "root=[1,2,3,null,null,4,null,5]",
+        "root=[]"
+      ]
+    },
+    {
+      "title": "Binary Tree Right Side View",
+      "category": "Trees",
+      "difficulty": "Medium",
+      "id": "binary-tree-right-side-view",
+      "statement": "You are given the `root` of a binary tree. Return only the values of the nodes that are visible from the right side of the tree, ordered from top to bottom.\n\n**Example 1:**\n\n```go\nInput: root = [1,2,3,null,4,null,5]\n\nOutput: [1,3,5]\n```\n\n**Example 2:**\n\n```go\nInput: root = [1,2,3,4,null,null,null,5]\n\nOutput: [1,3,4,5]\n```\n\n**Example 3:**\n\n```go\nInput: root = [1,null,2]\n\nOutput: [1,2]\n```\n\n**Example 4:**\n\n```go\nInput: root = []\n\nOutput: []\n```\n\n**Constraints:**\n* `0 <= number of nodes in the tree <= 100`\n* `-100 <= Node.val <= 100`",
+      "starterCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc rightSideView(root *TreeNode) []int {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc rightSideView(root *TreeNode) []int {\n    var res []int\n    queue := []*TreeNode{root}\n\n    for len(queue) > 0 {\n        rightSide := (*TreeNode)(nil)\n        qLen := len(queue)\n\n        for i := 0; i < qLen; i++ {\n            node := queue[0]\n            queue = queue[1:]\n            if node != nil {\n                rightSide = node\n                queue = append(queue, node.Left)\n                queue = append(queue, node.Right)\n            }\n        }\n\n        if rightSide != nil {\n            res = append(res, rightSide.Val)\n        }\n    }\n\n    return res\n}\n",
+      "customTestCases": [
+        "root=[1,2,3,null,4,null,5]",
+        "root=[1,2,3,4,null,null,null,5]"
+      ]
+    },
+    {
+      "title": "Count Good Nodes in Binary Tree",
+      "category": "Trees",
+      "difficulty": "Medium",
+      "id": "count-good-nodes-in-binary-tree",
+      "statement": "Within a binary tree, a node `x` is considered **good** if the path from the root of the tree to the node `x` contains no nodes with a value greater than the value of node `x`\n\nGiven the root of a binary tree `root`, return the number of **good** nodes within the tree.\n\n**Example 1:**\n\n```go\nInput: root = [2,1,1,3,null,1,5]\n\nOutput: 3\n```\n\n**Example 2:**\n\n```go\nInput: root = [1,2,-1,3,4]\n\nOutput: 4\n```\n\n**Constraints:**\n* `1 <= number of nodes in the tree <= 100,000`\n* `-100 <= Node.val <= 100`",
+      "starterCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc goodNodes(root *TreeNode) int {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc goodNodes(root *TreeNode) int {\n    var dfs func(node *TreeNode, maxVal int) int\n    dfs = func(node *TreeNode, maxVal int) int {\n        if node == nil {\n            return 0\n        }\n        \n        res := 0\n        if node.Val >= maxVal {\n            res = 1\n        }\n        \n        maxVal = max(maxVal, node.Val)\n        res += dfs(node.Left, maxVal)\n        res += dfs(node.Right, maxVal)\n        \n        return res\n    }\n    \n    return dfs(root, root.Val)\n}\n\nfunc max(a, b int) int {\n    if a > b {\n        return a\n    }\n    return b\n}\n",
+      "customTestCases": [
+        "root=[2,1,1,3,null,1,5]",
+        "root=[3,3,null,4,2]"
+      ]
+    },
+    {
+      "title": "Kth Largest Element in a Stream",
+      "category": "Heap / Priority Queue",
+      "difficulty": "Easy",
+      "id": "kth-largest-integer-in-a-stream",
+      "statement": "Design a class to find the `kth` largest integer in a stream of values, including duplicates. E.g. the `2nd` largest from [1, 2, 3, 3] is `3`. The stream is not necessarily sorted.\n\nImplement the following methods:\n* `constructor(int k, int[] nums)` Initializes the object given an integer `k` and the stream of integers `nums`.\n* `int add(int val)` Adds the integer `val` to the stream and returns the `kth` largest integer in the stream.\n\n**Example 1:**\n\n```go\nInput:\n[\"KthLargest\", [3, [1, 2, 3, 3]], \"add\", [3], \"add\", [5], \"add\", [6], \"add\", [7], \"add\", [8]]\n\nOutput:\n[null, 3, 3, 3, 5, 6]\n\nExplanation:\nKthLargest kthLargest = new KthLargest(3, [1, 2, 3, 3]);\nkthLargest.add(3);   // return 3\nkthLargest.add(5);   // return 3\nkthLargest.add(6);   // return 3\nkthLargest.add(7);   // return 5\nkthLargest.add(8);   // return 6\n```\n\n**Constraints:**\n* `1 <= k <= 1000`\n* `0 <= nums.length <= 1000`\n* `-1000 <= nums[i] <= 1000`\n* `-1000 <= val <= 1000`\n* There will always be at least `k` integers in the stream when you search for the `kth` integer.",
+      "starterCode": "type KthLargest struct {\n    \n}\n\n\nfunc Constructor(k int, nums []int) KthLargest {\n    \n}\n\n\nfunc (this *KthLargest) Add(val int) int {\n    \n}\n",
+      "referenceCode": "type KthLargest struct {\n    minHeap []int\n    k       int\n}\n\nfunc Constructor(k int, nums []int) KthLargest {\n    kl := KthLargest{\n        minHeap: nums,\n        k:       k,\n    }\n    heap.Init(&minHeap{&kl.minHeap})\n    for len(kl.minHeap) > k {\n        heap.Pop(&minHeap{&kl.minHeap})\n    }\n    return kl\n}\n\nfunc (this *KthLargest) Add(val int) int {\n    heap.Push(&minHeap{&this.minHeap}, val)\n    if len(this.minHeap) > this.k {\n        heap.Pop(&minHeap{&this.minHeap})\n    }\n    return this.minHeap[0]\n}\n\n\ntype minHeap struct {\n    nums *[]int\n}\n\nfunc (h minHeap) Len() int           { return len(*h.nums) }\nfunc (h minHeap) Less(i, j int) bool { return (*h.nums)[i] < (*h.nums)[j] }\nfunc (h minHeap) Swap(i, j int)      { (*h.nums)[i], (*h.nums)[j] = (*h.nums)[j], (*h.nums)[i] }\n\nfunc (h *minHeap) Push(x interface{}) {\n    *h.nums = append(*h.nums, x.(int))\n}\n\nfunc (h *minHeap) Pop() interface{} {\n    old := *h.nums\n    n := len(old)\n    x := old[n-1]\n    *h.nums = old[0 : n-1]\n    return x\n}\n",
+      "customTestCases": [
+        "[\"KthLargest\", [3, [1, 2, 3, 3]], \"add\", [3], \"add\", [5], \"add\", [6], \"add\", [7], \"add\", [8]]"
+      ]
+    },
+    {
+      "title": "Last Stone Weight",
+      "category": "Heap / Priority Queue",
+      "difficulty": "Easy",
+      "id": "last-stone-weight",
+      "statement": "You are given an array of integers `stones` where `stones[i]` represents the weight of the `ith` stone.\n\nWe want to run a simulation on the stones as follows:\n\n* At each step we choose the **two heaviest stones**, with weight `x` and `y` and smash them togethers\n* If `x == y`, both stones are destroyed\n* If `x < y`, the stone of weight `x` is destroyed, and the stone of weight `y` has new weight `y - x`.\n\nContinue the simulation until there is no more than one stone remaining.\n\nReturn the weight of the last remaining stone or return `0` if none remain.\n\n**Example 1:**\n\n```go\nInput: stones = [2,3,6,2,4]\n\nOutput: 1\n```\nExplanation:\nWe smash 6 and 4 and are left with a 2, so the array becomes [2,3,2,2].\nWe smash 3 and 2 and are left with a 1, so the array becomes [1,2,2].\nWe smash 2 and 2, so the array becomes [1].\n\n**Example 2:**\n\n```go\nInput: stones = [1,2]\n\nOutput: 1\n```\n\n**Constraints:**\n* `1 <= stones.length <= 20`\n* `1 <= stones[i] <= 100`",
+      "starterCode": "func lastStoneWeight(stones []int) int {\n\n}\n",
+      "referenceCode": "func lastStoneWeight(stones []int) int {\n    h := make([]int, len(stones))\n    for i, s := range stones {\n        h[i] = -s\n    }\n    heap.Init(&maxHeap{&h})\n    \n    for len(h) > 1 {\n        first := heap.Pop(&maxHeap{&h}).(int)\n        second := heap.Pop(&maxHeap{&h}).(int)\n        \n        if second > first {\n            heap.Push(&maxHeap{&h}, first-second)\n        }\n    }\n    \n    if len(h) == 0 {\n        h = append(h, 0)\n    }\n    return abs(h[0])\n}\n\nfunc abs(x int) int {\n    if x < 0 {\n        return -x\n    }\n    return x\n}\n\ntype maxHeap struct {\n    nums *[]int\n}\n\nfunc (h maxHeap) Len() int           { return len(*h.nums) }\nfunc (h maxHeap) Less(i, j int) bool { return (*h.nums)[i] < (*h.nums)[j] }\nfunc (h maxHeap) Swap(i, j int)      { (*h.nums)[i], (*h.nums)[j] = (*h.nums)[j], (*h.nums)[i] }\n\nfunc (h *maxHeap) Push(x interface{}) {\n    *h.nums = append(*h.nums, x.(int))\n}\n\nfunc (h *maxHeap) Pop() interface{} {\n    old := *h.nums\n    n := len(old)\n    x := old[n-1]\n    *h.nums = old[0 : n-1]\n    return x\n}\n",
+      "customTestCases": [
+        "stones=[2,3,6,2,4]",
+        "stones=[1,2]"
+      ]
+    },
+    {
+      "title": "K Closest Points to Origin",
+      "category": "Heap / Priority Queue",
+      "difficulty": "Medium",
+      "id": "k-closest-points-to-origin",
+      "statement": "You are given an 2-D array `points` where `points[i] = [xi, yi]` represents the coordinates of a point on an X-Y axis plane. You are also given an integer `k`.\n    \nReturn the `k` closest points to the origin `(0, 0)`. \n\nThe distance between two points is defined as the Euclidean distance (`sqrt((x1 - x2)^2 + (y1 - y2)^2))`.\n\nYou may return the answer in **any order**. The answer is **guaranteed** to be **unique**(except for the order in which the points are returned.)\n\n**Example 1:**\n\n```go\nInput: points = [[0,2],[2,2]], k = 1\n\nOutput: [[0,2]]\n```\n\nExplanation : The distance between `(0, 2)` and the origin `(0, 0)` is `2`. The distance between `(2, 2)` and the origin is `sqrt(2^2 + 2^2) = 2.82842`. So the closest point to the origin is `(0, 2)`.\n\n**Example 2:**\n\n```go\nInput: points = [[0,2],[2,0],[2,2]], k = 2\n\nOutput: [[0,2],[2,0]]\n```\n\nExplanation: The output `[2,0],[0,2]` would also be accepted.\n\n**Constraints:**\n* `1 <= k <= points.length <= 1000`\n* `-100 <= points[i][0], points[i][1] <= 100`",
+      "starterCode": "func kClosest(points [][]int, k int) [][]int {\n\n}\n",
+      "referenceCode": "func kClosest(points [][]int, k int) [][]int {\n    minHeap := [][]int{}\n    for _, point := range points {\n        x, y := point[0], point[1]\n        dist := (x * x) + (y * y)\n        minHeap = append(minHeap, []int{dist, x, y})\n    }\n    \n    heap.Init(&minHeapPoints{&minHeap})\n    res := [][]int{}\n    for i := 0; i < k; i++ {\n        popped := heap.Pop(&minHeapPoints{&minHeap}).([]int)\n        _, x, y := popped[0], popped[1], popped[2]\n        res = append(res, []int{x, y})\n    }\n    return res\n}\n\ntype minHeapPoints struct {\n    points *[][]int\n}\n\nfunc (h minHeapPoints) Len() int           { return len(*h.points) }\nfunc (h minHeapPoints) Less(i, j int) bool { return (*h.points)[i][0] < (*h.points)[j][0] }\nfunc (h minHeapPoints) Swap(i, j int)      { (*h.points)[i], (*h.points)[j] = (*h.points)[j], (*h.points)[i] }\n\nfunc (h *minHeapPoints) Push(x interface{}) {\n    *h.points = append(*h.points, x.([]int))\n}\n\nfunc (h *minHeapPoints) Pop() interface{} {\n    old := *h.points\n    n := len(old)\n    x := old[n-1]\n    *h.points = old[0 : n-1]\n    return x\n}\n",
+      "customTestCases": [
+        "points=[[0,2],[2,2]]\nk=1",
+        "points=[[0,2],[2,0],[2,2]]\nk=2"
+      ]
+    },
+    {
+      "title": "Kth Largest Element in an Array",
+      "category": "Heap / Priority Queue",
+      "difficulty": "Medium",
+      "id": "kth-largest-element-in-an-array",
+      "statement": "Given an unsorted array of integers `nums` and an integer `k`, return the `kth` largest element in the array.\n\nBy `kth` largest element, we mean the `kth` largest element in the sorted order, not the `kth` distinct element.\n\nFollow-up: Can you solve it without sorting?\n\n**Example 1:**\n\n```go\nInput: nums = [2,3,1,5,4], k = 2\n\nOutput: 4\n```\n\n**Example 2:**\n\n```go\nInput: nums = [2,3,1,1,5,5,4], k = 3\n\nOutput: 4\n```\n\n**Constraints:**\n* `1 <= k <= nums.length <= 10000`\n* `-1000 <= nums[i] <= 1000`",
+      "starterCode": "func findKthLargest(nums []int, k int) int {\n\n}\n",
+      "referenceCode": "func findKthLargest(nums []int, k int) int {\n    k = len(nums) - k\n    left, right := 0, len(nums)-1\n    \n    for left < right {\n        pivot := partition(nums, left, right)\n        \n        if pivot < k {\n            left = pivot + 1\n        } else if pivot > k {\n            right = pivot - 1\n        } else {\n            break\n        }\n    }\n    \n    return nums[k]\n}\n\nfunc partition(nums []int, left int, right int) int {\n    pivot, fill := nums[right], left\n    \n    for i := left; i < right; i++ {\n        if nums[i] <= pivot {\n            nums[fill], nums[i] = nums[i], nums[fill]\n            fill++\n        }\n    }\n    \n    nums[fill], nums[right] = nums[right], nums[fill]\n    \n    return fill\n}\n",
+      "customTestCases": [
+        "nums=[2,3,1,5,4]\nk=2",
+        "nums=[2,3,1,1,5,5,4]\nk=3"
+      ]
+    },
+    {
+      "title": "Task Scheduler",
+      "category": "Heap / Priority Queue",
+      "difficulty": "Medium",
+      "id": "task-scheduling",
+      "statement": "You are given an array of CPU  tasks `tasks`, where `tasks[i]` is an uppercase english character from `A` to `Z`. You are also given an integer `n`. \n    \nEach CPU cycle allows the completion of a single task, and tasks may be completed in any order.\n\nThe only constraint is that **identical** tasks must be separated by at least `n` CPU cycles, to cooldown the CPU.\n\nReturn the *minimum number* of CPU cycles required to complete all tasks.\n\n**Example 1:**\n\n```go\nInput: tasks = [\"X\",\"X\",\"Y\",\"Y\"], n = 2\n\nOutput: 5\n```\n\nExplanation: A possible sequence is: X -> Y -> idle -> X -> Y.\n\n**Example 2:**\n\n```go\nInput: tasks = [\"A\",\"A\",\"A\",\"B\",\"C\"], n = 3\n\nOutput: 9\n```\n\nExplanation: A possible sequence is: A -> B -> C -> Idle -> A -> Idle -> Idle -> Idle -> A.\n\n**Constraints:**\n* `1 <= tasks.length <= 10000`\n* `0 <= n <= 100`",
+      "starterCode": "func leastInterval(tasks []byte, n int) int {\n\n}\n",
+      "referenceCode": "func leastInterval(tasks []byte, n int) int {\n    count := make(map[byte]int)\n    for _, task := range tasks {\n        count[task]++\n    }\n    \n    maxHeap := make([]int, 0)\n    for _, cnt := range count {\n        maxHeap = append(maxHeap, -cnt)\n    }\n    heap.Init(&maxHeapInt{&maxHeap})\n    \n    time := 0\n    q := [][]int{} // pairs of [cnt, idleTime]\n    \n    for len(maxHeap) > 0 || len(q) > 0 {\n        time++\n        \n        if len(maxHeap) == 0 {\n            time = q[0][1]\n        } else {\n            cnt := 1 + heap.Pop(&maxHeapInt{&maxHeap}).(int)\n            if cnt != 0 {\n                q = append(q, []int{cnt, time + n})\n            }\n        }\n        \n        if len(q) > 0 && q[0][1] == time {\n            heap.Push(&maxHeapInt{&maxHeap}, q[0][0])\n            q = q[1:]\n        }\n    }\n    \n    return time\n}\n\ntype maxHeapInt struct {\n    nums *[]int\n}\n\nfunc (h maxHeapInt) Len() int           { return len(*h.nums) }\nfunc (h maxHeapInt) Less(i, j int) bool { return (*h.nums)[i] < (*h.nums)[j] }\nfunc (h maxHeapInt) Swap(i, j int)      { (*h.nums)[i], (*h.nums)[j] = (*h.nums)[j], (*h.nums)[i] }\n\nfunc (h *maxHeapInt) Push(x interface{}) {\n    *h.nums = append(*h.nums, x.(int))\n}\n\nfunc (h *maxHeapInt) Pop() interface{} {\n    old := *h.nums\n    n := len(old)\n    x := old[n-1]\n    *h.nums = old[0 : n-1]\n    return x\n}\n",
+      "customTestCases": [
+        "tasks=[\"X\",\"X\",\"Y\",\"Y\"]\nn=2",
+        "tasks=[\"A\",\"A\",\"A\",\"B\",\"C\"]\nn=3"
+      ]
+    },
+    {
+      "title": "Design Twitter",
+      "category": "Heap / Priority Queue",
+      "difficulty": "Medium",
+      "id": "design-twitter-feed",
+      "statement": "Implement a simplified version of Twitter which allows users to post tweets, follow/unfollow each other, and view the `10` most recent tweets within their own news feed.\n\nUsers and tweets are uniquely identified by their IDs (integers).\n\nImplement the following methods:\n\n* `Twitter()` Initializes the twitter object.\n* `void postTweet(int userId, int tweetId)` Publish a new tweet with ID `tweetId` by the user `userId`. You may assume that each `tweetId` is unique.\n* `List<Integer> getNewsFeed(int userId)` Fetches at most the `10` most recent tweet IDs in the user's news feed. Each item must be posted by users who the user is following or by the user themself. Tweets IDs should be **ordered from most recent to least recent**.\n* `void follow(int followerId, int followeeId)` The user with ID `followerId` follows the user with ID `followeeId`.\n* `void unfollow(int followerId, int followeeId)` The user with ID `followerId` unfollows the user with ID `followeeId`.\n\n**Example 1:**\n\n```go\nInput:\n[\"Twitter\", \"postTweet\", [1, 10], \"postTweet\", [2, 20], \"getNewsFeed\", [1], \"getNewsFeed\", [2], \"follow\", [1, 2], \"getNewsFeed\", [1], \"getNewsFeed\", [2], \"unfollow\", [1, 2], \"getNewsFeed\", [1]]\n\nOutput:\n[null, null, null, [10], [20], null, [20, 10], [20], null, [10]]\n\nExplanation:\nTwitter twitter = new Twitter();\ntwitter.postTweet(1, 10); // User 1 posts a new tweet with id = 10.\ntwitter.postTweet(2, 20); // User 2 posts a new tweet with id = 20.\ntwitter.getNewsFeed(1);   // User 1's news feed should only contain their own tweets -> [10].\ntwitter.getNewsFeed(2);   // User 2's news feed should only contain their own tweets -> [20].\ntwitter.follow(1, 2);     // User 1 follows user 2.\ntwitter.getNewsFeed(1);   // User 1's news feed should contain both tweets from user 1 and user 2 -> [20, 10].\ntwitter.getNewsFeed(2);   // User 2's news feed should still only contain their own tweets -> [20].\ntwitter.unfollow(1, 2);   // User 1 unfollows user 2.\ntwitter.getNewsFeed(1);   // User 1's news feed should only contain their own tweets -> [10].\n```\n\n**Constraints:**\n* `1 <= userId, followerId, followeeId <= 500`\n* `0 <= tweetId <= 10^4`\n* All the tweets have **unique** IDs.\n* At most `3 * 10^4` calls will be made to `postTweet`, `getNewsFeed`, `follow`, and `unfollow`.\n* A user cannot follow themself.",
+      "starterCode": "type Twitter struct {\n    \n}\n\n\nfunc Constructor() Twitter {\n    \n}\n\n\nfunc (this *Twitter) PostTweet(userId int, tweetId int)  {\n    \n}\n\n\nfunc (this *Twitter) GetNewsFeed(userId int) []int {\n    \n}\n\n\nfunc (this *Twitter) Follow(followerId int, followeeId int)  {\n    \n}\n\n\nfunc (this *Twitter) Unfollow(followerId int, followeeId int)  {\n    \n}\n",
+      "referenceCode": "type Twitter struct {\n    count     int\n    tweetMap  map[int][][]int\n    followMap map[int]map[int]bool\n}\n\n\nfunc Constructor() Twitter {\n    return Twitter{\n        count:     0,\n        tweetMap:  make(map[int][][]int),\n        followMap: make(map[int]map[int]bool),\n    }\n}\n\n\nfunc (this *Twitter) PostTweet(userId int, tweetId int)  {\n    this.tweetMap[userId] = append(this.tweetMap[userId], []int{this.count, tweetId})\n    this.count--\n}\n\n\nfunc (this *Twitter) GetNewsFeed(userId int) []int {\n    res := []int{}\n    h := &minHeap{}\n    heap.Init(h)\n    \n    if this.followMap[userId] == nil {\n        this.followMap[userId] = make(map[int]bool)\n    }\n    this.followMap[userId][userId] = true\n    \n    for followeeId := range this.followMap[userId] {\n        if tweets, ok := this.tweetMap[followeeId]; ok {\n            index := len(tweets) - 1\n            count, tweetId := tweets[index][0], tweets[index][1]\n            heap.Push(h, []int{count, tweetId, followeeId, index - 1})\n        }\n    }\n    \n    for h.Len() > 0 && len(res) < 10 {\n        tweet := heap.Pop(h).([]int)\n        count, tweetId, followeeId, index := tweet[0], tweet[1], tweet[2], tweet[3]\n        res = append(res, tweetId)\n        \n        if index >= 0 {\n            count, tweetId = this.tweetMap[followeeId][index][0], this.tweetMap[followeeId][index][1]\n            heap.Push(h, []int{count, tweetId, followeeId, index - 1})\n        }\n    }\n    \n    return res\n}\n\n\nfunc (this *Twitter) Follow(followerId int, followeeId int)  {\n    if this.followMap[followerId] == nil {\n        this.followMap[followerId] = make(map[int]bool)\n    }\n    this.followMap[followerId][followeeId] = true\n}\n\n\nfunc (this *Twitter) Unfollow(followerId int, followeeId int)  {\n    if this.followMap[followerId] != nil {\n        delete(this.followMap[followerId], followeeId)\n    }\n}\n\ntype minHeap [][]int\n\nfunc (h minHeap) Len() int           { return len(h) }\nfunc (h minHeap) Less(i, j int) bool { return h[i][0] < h[j][0] }\nfunc (h minHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }\n\nfunc (h *minHeap) Push(x interface{}) {\n    *h = append(*h, x.([]int))\n}\n\nfunc (h *minHeap) Pop() interface{} {\n    old := *h\n    n := len(old)\n    x := old[n-1]\n    *h = old[0 : n-1]\n    return x\n}\n",
+      "customTestCases": [
+        "[\"Twitter\", \"postTweet\", [1, 10], \"postTweet\", [2, 20], \"getNewsFeed\", [1], \"getNewsFeed\", [2], \"follow\", [1, 2], \"getNewsFeed\", [1], \"getNewsFeed\", [2], \"unfollow\", [1, 2], \"getNewsFeed\", [1]]"
+      ]
+    },
+    {
+      "title": "Subsets",
+      "category": "Backtracking",
+      "difficulty": "Medium",
+      "id": "subsets",
+      "statement": "Given an array `nums` of **unique** integers, return all possible subsets of `nums`.\n\nThe solution set must **not** contain duplicate subsets. You may return the solution in **any order**.\n\n**Example 1:**\n\n```go\nInput: nums = [1,2,3]\n\nOutput: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]\n```\n\n**Example 2:**\n\n```go\nInput: nums = [7]\n\nOutput: [[],[7]]\n```\n\n**Constraints:**\n* `1 <= nums.length <= 10`\n* `-10 <= nums[i] <= 10`",
+      "starterCode": "func subsets(nums []int) [][]int {\n\n}\n",
+      "referenceCode": "func subsets(nums []int) [][]int {\n    res := [][]int{}\n    subset := []int{}\n    \n    var dfs func(i int)\n    dfs = func(i int) {\n        if i >= len(nums) {\n            temp := make([]int, len(subset))\n            copy(temp, subset)\n            res = append(res, temp)\n            return\n        }\n        \n        subset = append(subset, nums[i])\n        dfs(i + 1)\n        \n        subset = subset[:len(subset)-1]\n        dfs(i + 1)\n    }\n    \n    dfs(0)\n    return res\n}\n",
+      "customTestCases": [
+        "nums=[1,2,3]",
+        "nums=[7]"
+      ]
+    },
+    {
+      "title": "Combination Sum II",
+      "category": "Backtracking",
+      "difficulty": "Medium",
+      "id": "combination-target-sum-ii",
+      "statement": "You are given an array of integers `candidates`, which may contain duplicates, and a target integer `target`. Your task is to return a list of all **unique combinations** of `candidates` where the chosen numbers sum to `target`.\n\nEach element from `candidates` may be chosen **at most once** within a combination. The solution set must not contain duplicate combinations.\n\nYou may return the combinations in **any order** and the order of the numbers in each combination can be in **any order**.\n\n**Example 1:**\n\n```go\nInput: candidates = [9,2,2,4,6,1,5], target = 8\n\nOutput: [\n  [1,2,5],\n  [2,2,4],\n  [2,6]\n]\n```\n\n**Example 2:**\n\n```go\nInput: candidates = [1,2,3,4,5], target = 7\n\nOutput: [\n  [1,2,4],\n  [2,5],\n  [3,4]\n]\n```\n\n**Constraints:**\n* `1 <= candidates.length <= 100`\n* `1 <= candidates[i] <= 50`\n* `1 <= target <= 30`",
+      "starterCode": "func combinationSum2(candidates []int, target int) [][]int {\n\n}\n",
+      "referenceCode": "func combinationSum2(candidates []int, target int) [][]int {\n    var res [][]int\n    sort.Ints(candidates)\n\n    var dfs func(i int, cur []int, total int)\n    dfs = func(i int, cur []int, total int) {\n        if total == target {\n            tmp := make([]int, len(cur))\n            copy(tmp, cur)\n            res = append(res, tmp)\n            return\n        }\n        if total > target || i == len(candidates) {\n            return\n        }\n\n        // include candidates[i]\n        cur = append(cur, candidates[i])\n        dfs(i+1, cur, total+candidates[i])\n        cur = cur[:len(cur)-1]\n\n        // skip duplicates\n        for i+1 < len(candidates) && candidates[i] == candidates[i+1] {\n            i++\n        }\n        dfs(i+1, cur, total)\n    }\n\n    dfs(0, []int{}, 0)\n    return res\n}\n",
+      "customTestCases": [
+        "candidates=[9,2,2,4,6,1,5]\ntarget=8",
+        "candidates=[1,2,3,4,5]\ntarget=7"
+      ]
+    },
+    {
+      "title": "Permutations",
+      "category": "Backtracking",
+      "difficulty": "Medium",
+      "id": "permutations",
+      "statement": "Given an array `nums` of **unique** integers, return all the possible permutations. You may return the answer in **any order**.\n\n**Example 1:**\n\n```go\nInput: nums = [1,2,3]\n\nOutput: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]\n```\n\n**Example 2:**\n\n```go\nInput: nums = [7]\n\nOutput: [[7]]\n```\n\n**Constraints:**\n* `1 <= nums.length <= 6`\n* `-10 <= nums[i] <= 10`",
+      "starterCode": "func permute(nums []int) [][]int {\n\n}\n",
+      "referenceCode": "func permute(nums []int) [][]int {\n    if len(nums) == 0 {\n        return [][]int{{}}\n    }\n\n    perms := permute(nums[1:])\n    var res [][]int\n    for _, p := range perms {\n        for i := 0; i <= len(p); i++ {\n            pCopy := append([]int{}, p...)\n            pCopy = append(pCopy[:i], append([]int{nums[0]}, pCopy[i:]...)...)\n            res = append(res, pCopy)\n        }\n    }\n    return res\n}\n",
+      "customTestCases": [
+        "nums=[1,2,3]",
+        "nums=[7]"
+      ]
+    },
+    {
+      "title": "Subsets II",
+      "category": "Backtracking",
+      "difficulty": "Medium",
+      "id": "subsets-ii",
+      "statement": "You are given an array `nums` of integers, which may contain duplicates. Return all possible subsets.\n\nThe solution must **not** contain duplicate subsets. You may return the solution in **any order**.\n\n**Example 1:**\n\n```go\nInput: nums = [1,2,1]\n\nOutput: [[],[1],[1,2],[1,1],[1,2,1],[2]]\n```\n\n**Example 2:**\n\n```go\nInput: nums = [7,7]\n\nOutput: [[],[7], [7,7]]\n```\n\n**Constraints:**\n* `1 <= nums.length <= 11`\n* `-20 <= nums[i] <= 20`",
+      "starterCode": "func subsetsWithDup(nums []int) [][]int {\n\n}\n",
+      "referenceCode": "func subsetsWithDup(nums []int) [][]int {\n    res := [][]int{}\n    sort.Ints(nums)\n\n    var backtrack func(i int, subset []int)\n    backtrack = func(i int, subset []int) {\n        if i == len(nums) {\n            tmp := make([]int, len(subset))\n            copy(tmp, subset)\n            res = append(res, tmp)\n            return\n        }\n\n        subset = append(subset, nums[i])\n        backtrack(i+1, subset)\n        subset = subset[:len(subset)-1]\n\n        for i+1 < len(nums) && nums[i] == nums[i+1] {\n            i++\n        }\n        backtrack(i+1, subset)\n    }\n\n    backtrack(0, []int{})\n    return res\n}\n",
+      "customTestCases": [
+        "nums=[1,2,1]",
+        "nums=[7,7]"
+      ]
+    },
+    {
+      "title": "Generate Parentheses",
+      "category": "Backtracking",
+      "difficulty": "Medium",
+      "id": "generate-parentheses",
+      "statement": "You are given an integer `n`. Return all well-formed parentheses strings that you can generate with `n` pairs of parentheses.\n\n**Example 1:**\n\n```go\nInput: n = 1\n\nOutput: [\"()\"]\n```\n\n**Example 2:**\n\n```go\nInput: n = 3\n\nOutput: [\"((()))\",\"(()())\",\"(())()\",\"()(())\",\"()()()\"]\n```\n\nYou may return the answer in **any order**.\n\n**Constraints:**\n* `1 <= n <= 7`",
+      "starterCode": "func generateParenthesis(n int) []string {\n\n}\n",
+      "referenceCode": "func generateParenthesis(n int) []string {\n\tstack := []string{}\n\tres := []string{}\n\n\tvar backtrack func(openN, closedN int)\n\tbacktrack = func(openN, closedN int) {\n\t\tif openN == n && closedN == n {\n\t\t\tres = append(res, strings.Join(stack, \"\"))\n\t\t\treturn\n\t\t}\n\n\t\tif openN < n {\n\t\t\tstack = append(stack, \"(\")\n\t\t\tbacktrack(openN+1, closedN)\n\t\t\tstack = stack[:len(stack)-1]\n\t\t}\n\n\t\tif closedN < openN {\n\t\t\tstack = append(stack, \")\")\n\t\t\tbacktrack(openN, closedN+1)\n\t\t\tstack = stack[:len(stack)-1]\n\t\t}\n\t}\n\n\tbacktrack(0, 0)\n\treturn res\n}\n",
+      "customTestCases": [
+        "n=1",
+        "n=3"
+      ]
+    },
+    {
+      "title": "Palindrome Partitioning",
+      "category": "Backtracking",
+      "difficulty": "Medium",
+      "id": "palindrome-partitioning",
+      "statement": "Given a string `s`, split `s` into substrings where every substring is a palindrome. Return all possible lists of palindromic substrings.\n\nYou may return the solution in **any order**.\n\n**Example 1:**\n\n```go\nInput: s = \"aab\"\n\nOutput: [[\"a\",\"a\",\"b\"],[\"aa\",\"b\"]]\n```\n\n**Example 2:**\n\n```go\nInput: s = \"a\"\n\nOutput: [[\"a\"]]\n```\n\n**Constraints:**\n* `1 <= s.length <= 20`\n* `s` contains only lowercase English letters.",
+      "starterCode": "func partition(s string) [][]string {\n\n}\n",
+      "referenceCode": "func partition(s string) [][]string {\n\tres, part := [][]string{}, []string{}\n\tvar dfs func(int)\n\tdfs = func(i int) {\n\t\tif i >= len(s) {\n\t\t\tres = append(res, append([]string{}, part...))\n\t\t\treturn\n\t\t}\n\t\tfor j := i; j < len(s); j++ {\n\t\t\tif isPali(s, i, j) {\n\t\t\t\tpart = append(part, s[i:j+1])\n\t\t\t\tdfs(j + 1)\n\t\t\t\tpart = part[:len(part)-1]\n\t\t\t}\n\t\t}\n\t}\n\tdfs(0)\n\treturn res\n}\n\nfunc isPali(s string, l, r int) bool {\n\tfor l < r {\n\t\tif s[l] != s[r] {\n\t\t\treturn false\n\t\t}\n\t\tl, r = l+1, r-1\n\t}\n\treturn true\n}\n",
+      "customTestCases": [
+        "s=\"aab\"",
+        "s=\"a\""
+      ]
+    },
+    {
+      "title": "Letter Combinations of a Phone Number",
+      "category": "Backtracking",
+      "difficulty": "Medium",
+      "id": "combinations-of-a-phone-number",
+      "statement": "You are given a string `digits` made up of digits from `2` through `9` inclusive.\n\nEach digit (not including 1) is mapped to a set of characters as shown below:\n\nA digit could represent any one of the characters it maps to.\n\nReturn all possible letter combinations that `digits` could represent. You may return the answer in **any order**.\n\n**Example 1:**\n\n```go\nInput: digits = \"34\"\n\nOutput: [\"dg\",\"dh\",\"di\",\"eg\",\"eh\",\"ei\",\"fg\",\"fh\",\"fi\"]\n```\n\n**Example 2:**\n\n```go\nInput: digits = \"\"\n\nOutput: []\n```\n\n**Constraints:**\n* `0 <= digits.length <= 4`\n* `2 <= digits[i] <= 9`",
+      "starterCode": "func letterCombinations(digits string) []string {\n\t\n}\n",
+      "referenceCode": "func letterCombinations(digits string) []string {\n\tres := []string{}\n\tdigitToChar := map[string]string{\n\t\t\"2\": \"abc\",\n\t\t\"3\": \"def\",\n\t\t\"4\": \"ghi\",\n\t\t\"5\": \"jkl\",\n\t\t\"6\": \"mno\",\n\t\t\"7\": \"qprs\",\n\t\t\"8\": \"tuv\",\n\t\t\"9\": \"wxyz\",\n\t}\n\n\tvar backtrack func(int, string)\n\tbacktrack = func(i int, curStr string) {\n\t\tif len(curStr) == len(digits) {\n\t\t\tres = append(res, curStr)\n\t\t\treturn\n\t\t}\n\t\tfor _, c := range digitToChar[string(digits[i])] {\n\t\t\tbacktrack(i+1, curStr+string(c))\n\t\t}\n\t}\n\n\tif len(digits) > 0 {\n\t\tbacktrack(0, \"\")\n\t}\n\treturn res\n}\n",
+      "customTestCases": [
+        "digits=\"34\"",
+        "digits=\"\""
+      ]
+    },
+    {
+      "title": "N-Queens",
+      "category": "Backtracking",
+      "difficulty": "Hard",
+      "id": "n-queens",
+      "statement": "The **n-queens** puzzle is the problem of placing `n` queens on an `n x n` chessboard so that no two queens can attack each other.\n\nA **queen** in a chessboard can attack horizontally, vertically, and diagonally.\n\nGiven an integer `n`, return all distinct solutions to the **n-queens puzzle**.\n\nEach solution contains a unique board layout where the queen pieces are placed. `'Q'` indicates a queen and `'.'` indicates an empty space.\n\nYou may return the answer in **any order**.\n\n**Example 1:**\n\n```go\nInput: n = 4\n\nOutput: [[\".Q..\",\"...Q\",\"Q...\",\"..Q.\"],[\"..Q.\",\"Q...\",\"...Q\",\".Q..\"]]\n```\n\nExplanation: There are two different solutions to the 4-queens puzzle.\n\n**Example 2:**\n\n```go\nInput: n = 1\n\nOutput: [[\"Q\"]]\n```\n\n**Constraints:**\n* `1 <= n <= 8`",
+      "starterCode": "func solveNQueens(n int) [][]string {\n\t\n}\n",
+      "referenceCode": "func solveNQueens(n int) [][]string {\n\tcol := make(map[int]bool)\n\tposDiag := make(map[int]bool)\n\tnegDiag := make(map[int]bool)\n\tres := [][]string{}\n\tboard := make([][]string, n)\n\tfor i := range board {\n\t\tboard[i] = make([]string, n)\n\t\tfor j := range board[i] {\n\t\t\tboard[i][j] = \".\"\n\t\t}\n\t}\n\n\tvar backtrack func(int)\n\tbacktrack = func(r int) {\n\t\tif r == n {\n\t\t\tcopy := make([]string, n)\n\t\t\tfor i := range board {\n\t\t\t\tcopy[i] = strings.Join(board[i], \"\")\n\t\t\t}\n\t\t\tres = append(res, copy)\n\t\t\treturn\n\t\t}\n\t\tfor c := 0; c < n; c++ {\n\t\t\tif col[c] || posDiag[r+c] || negDiag[r-c] {\n\t\t\t\tcontinue\n\t\t\t}\n\t\t\tcol[c] = true\n\t\t\tposDiag[r+c] = true\n\t\t\tnegDiag[r-c] = true\n\t\t\tboard[r][c] = \"Q\"\n\t\t\tbacktrack(r + 1)\n\t\t\tdelete(col, c)\n\t\t\tdelete(posDiag, r+c)\n\t\t\tdelete(negDiag, r-c)\n\t\t\tboard[r][c] = \".\"\n\t\t}\n\t}\n\tbacktrack(0)\n\treturn res\n}\n",
+      "customTestCases": [
+        "n=4",
+        "n=1"
+      ]
+    },
+    {
+      "title": "Max Area of Island",
+      "category": "Graphs",
+      "difficulty": "Medium",
+      "id": "max-area-of-island",
+      "statement": "You are given a matrix `grid` where `grid[i]` is either a `0` (representing water) or `1` (representing land).\n\nAn island is defined as a group of `1`'s connected horizontally or vertically. You may assume all four edges of the grid are surrounded by water.\n\nThe **area** of an island is defined as the number of cells within the island.\n\nReturn the maximum **area** of an island in `grid`. If no island exists, return `0`.\n\n**Example 1:**\n\n```go\nInput: grid = [\n  [0,1,1,0,1],\n  [1,0,1,0,1],\n  [0,1,1,0,1],\n  [0,1,0,0,1]\n]\n\nOutput: 6\n```\nExplanation: `1`'s cannot be connected diagonally, so the maximum area of the island is `6`.\n\n**Constraints:**\n* `1 <= grid.length, grid[i].length <= 50`",
+      "starterCode": "func maxAreaOfIsland(grid [][]int) int {\n    \n}\n",
+      "referenceCode": "func maxAreaOfIsland(grid [][]int) int {\n    rows, cols := len(grid), len(grid[0])\n    visit := make(map[[2]int]bool)\n\n    var dfs func(r, c int) int\n    dfs = func(r, c int) int {\n        if r < 0 ||\n            r == rows ||\n            c < 0 ||\n            c == cols ||\n            grid[r][c] == 0 ||\n            visit[[2]int{r, c}] {\n            return 0\n        }\n        visit[[2]int{r, c}] = true\n        return 1 + dfs(r+1, c) + dfs(r-1, c) + dfs(r, c+1) + dfs(r, c-1)\n    }\n\n    area := 0\n    for r := 0; r < rows; r++ {\n        for c := 0; c < cols; c++ {\n            area = max(area, dfs(r, c))\n        }\n    }\n    return area\n}\n",
+      "customTestCases": [
+        "grid=[[0,1,1,0,1],[1,0,1,0,1],[0,1,1,0,1],[0,1,0,0,1]]"
+      ]
+    },
+    {
+      "title": "Islands and Treasure",
+      "category": "Graphs",
+      "difficulty": "Medium",
+      "id": "islands-and-treasure",
+      "statement": "You are given a `m × n` 2D `grid` initialized with these three possible values:\n\n1. `-1` - A water cell that *can not* be traversed.\n2. `0` - A treasure chest.\n3. `INF` - A land cell that *can* be traversed. We use the integer `2^31 - 1 = 2147483647` to represent `INF`.\n\nFill each land cell with the distance to its nearest treasure chest. If a land cell cannot reach a treasure chest then the value should remain `INF`.\n\nAssume the grid can only be traversed up, down, left, or right.\n\nModify the `grid` **in-place**.\n\n**Example 1:**\n\n```go\nInput: [\n  [2147483647,-1,0,2147483647],\n  [2147483647,2147483647,2147483647,-1],\n  [2147483647,-1,2147483647,-1],\n  [0,-1,2147483647,2147483647]\n]\n\nOutput: [\n  [3,-1,0,1],\n  [2,2,1,-1],\n  [1,-1,2,-1],\n  [0,-1,3,4]\n]\n```\n\n**Example 2:**\n\n```go\nInput: [\n  [0,-1],\n  [2147483647,2147483647]\n]\n\nOutput: [\n  [0,-1],\n  [1,2]\n]\n```\n\n**Constraints:**\n* `m == grid.length`\n* `n == grid[i].length`\n* `1 <= m, n <= 100`\n* `grid[i][j]` is one of `{-1, 0, 2147483647}`",
+      "starterCode": "func islandsAndTreasure(grid [][]int) {\n    \n}\n",
+      "referenceCode": "func islandsAndTreasure(grid [][]int) {\n    rows, cols := len(grid), len(grid[0])\n    visit := make(map[[2]int]bool)\n    q := [][2]int{}\n\n    addCell := func(r, c int) {\n        if r < 0 || c < 0 ||\n            r == rows ||\n            c == cols ||\n            visit[[2]int{r, c}] ||\n            grid[r][c] == -1 {\n            return\n        }\n        visit[[2]int{r, c}] = true\n        q = append(q, [2]int{r, c})\n    }\n\n    for r := 0; r < rows; r++ {\n        for c := 0; c < cols; c++ {\n            if grid[r][c] == 0 {\n                q = append(q, [2]int{r, c})\n                visit[[2]int{r, c}] = true\n            }\n        }\n    }\n\n    dist := 0\n    for len(q) > 0 {\n        qLen := len(q)\n        for i := 0; i < qLen; i++ {\n            cell := q[0]\n            q = q[1:]\n            r, c := cell[0], cell[1]\n            grid[r][c] = dist\n            addCell(r+1, c)\n            addCell(r-1, c)\n            addCell(r, c+1)\n            addCell(r, c-1)\n        }\n        dist++\n    }\n}\n",
+      "customTestCases": [
+        "grid=[[2147483647,-1,0,2147483647],[2147483647,2147483647,2147483647,-1],[2147483647,-1,2147483647,-1],[0,-1,2147483647,2147483647]]",
+        "grid=[[0,-1],[2147483647,2147483647]]"
+      ]
+    },
+    {
+      "title": "Rotting Fruit",
+      "category": "Graphs",
+      "difficulty": "Medium",
+      "id": "rotting-fruit",
+      "statement": "You are given a 2-D matrix `grid`. Each cell can have one of three possible values:\n* `0` representing an empty cell\n* `1` representing a fresh fruit\n* `2` representing a rotten fruit\n\nEvery minute, if a fresh fruit is horizontally or vertically adjacent to a rotten fruit, then the fresh fruit also becomes rotten.\n\nReturn the minimum number of minutes that must elapse until there are zero fresh fruits remaining. If this state is impossible within the grid, return `-1`.\n\n**Example 1:**\n\n```go\nInput: grid = [[1,1,0],[0,1,1],[0,1,2]]\n\nOutput: 4\n```\n\n**Example 2:**\n\n```go\nInput: grid = [[1,0,1],[0,2,0],[1,0,1]]\n\nOutput: -1\n```\n\n**Constraints:**\n* `1 <= grid.length, grid[i].length <= 10`",
+      "starterCode": "func orangesRotting(grid [][]int) int {\n    \n}\n",
+      "referenceCode": "func orangesRotting(grid [][]int) int {\n    q := [][2]int{}\n    fresh := 0\n    time := 0\n\n    for r := 0; r < len(grid); r++ {\n        for c := 0; c < len(grid[0]); c++ {\n            if grid[r][c] == 1 {\n                fresh++\n            }\n            if grid[r][c] == 2 {\n                q = append(q, [2]int{r, c})\n            }\n        }\n    }\n\n    directions := [][2]int{{0, 1}, {0, -1}, {1, 0}, {-1, 0}}\n    for fresh > 0 && len(q) > 0 {\n        length := len(q)\n        for i := 0; i < length; i++ {\n            r, c := q[0][0], q[0][1]\n            q = q[1:]\n\n            for _, dir := range directions {\n                dr, dc := dir[0], dir[1]\n                row, col := r+dr, c+dc\n                if row >= 0 && row < len(grid) &&\n                    col >= 0 && col < len(grid[0]) &&\n                    grid[row][col] == 1 {\n                    grid[row][col] = 2\n                    q = append(q, [2]int{row, col})\n                    fresh--\n                }\n            }\n        }\n        time++\n    }\n\n    if fresh == 0 {\n        return time\n    }\n    return -1\n}\n",
+      "customTestCases": [
+        "grid=[[1,1,0],[0,1,1],[0,1,2]]",
+        "grid=[[1,0,1],[0,2,0],[1,0,1]]"
+      ]
+    },
+    {
+      "title": "Surrounded Regions",
+      "category": "Graphs",
+      "difficulty": "Medium",
+      "id": "surrounded-regions",
+      "statement": "You are given an `m x n` matrix `board` containing letters `'X'` and `'O'`, capture regions that are surrounded:\n\n* **Connect:** A cell is connected to adjacent cells horizontally or vertically.\n\n* **Region:** To form a region connect every `'O'` cell. Regions can have any shape; they do not need to be squares or rectangles.\n\n* **Surround:** A region is surrounded if none of the `'O'` cells in that region are on the edge of the board. Such regions are **completely enclosed** by `'X'` cells.\n\nTo capture a **surrounded region**, replace all `'O'`s with `'X'`s **in-place** within the original board. You do not need to return anything.\n\n**Example 1:**\n\n```go\nInput: board = [\n  [\"X\",\"X\",\"X\",\"X\"],\n  [\"X\",\"O\",\"O\",\"X\"],\n  [\"X\",\"X\",\"O\",\"X\"],\n  [\"X\",\"O\",\"X\",\"X\"]\n]\n\nOutput: [\n  [\"X\",\"X\",\"X\",\"X\"],\n  [\"X\",\"X\",\"X\",\"X\"],\n  [\"X\",\"X\",\"X\",\"X\"],\n  [\"X\",\"O\",\"X\",\"X\"]\n]\n```\n\nExplanation: The bottom `'O'` region is not captured because it touches the edge of the board, so it cannot be surrounded.\n\n**Example 2:**\n\n```go\nInput: board = [[\"X\"]]\n\nOutput: [[\"X\"]]\n```\n\n**Constraints:**\n* `1 <= board.length, board[i].length <= 200`\n* `board[i][j]` is `'X'` or `'O'`.",
+      "starterCode": "func solve(board [][]byte) {\n    \n}\n",
+      "referenceCode": "func solve(board [][]byte) {\n    rows, cols := len(board), len(board[0])\n\n    var capture func(r, c int)\n    capture = func(r, c int) {\n        if r < 0 || c < 0 || r == rows || c == cols || board[r][c] != 'O' {\n            return\n        }\n        board[r][c] = 'T'\n        capture(r+1, c)\n        capture(r-1, c)\n        capture(r, c+1)\n        capture(r, c-1)\n    }\n\n    for r := 0; r < rows; r++ {\n        for c := 0; c < cols; c++ {\n            if board[r][c] == 'O' && (r == 0 || r == rows-1 || c == 0 || c == cols-1) {\n                capture(r, c)\n            }\n        }\n    }\n\n    for r := 0; r < rows; r++ {\n        for c := 0; c < cols; c++ {\n            if board[r][c] == 'O' {\n                board[r][c] = 'X'\n            }\n        }\n    }\n\n    for r := 0; r < rows; r++ {\n        for c := 0; c < cols; c++ {\n            if board[r][c] == 'T' {\n                board[r][c] = 'O'\n            }\n        }\n    }\n}\n",
+      "customTestCases": [
+        "board=[[\"X\",\"X\",\"X\",\"X\"],[\"X\",\"O\",\"O\",\"X\"],[\"X\",\"X\",\"O\",\"X\"],[\"X\",\"O\",\"X\",\"X\"]]",
+        "board=[[\"X\"]]"
+      ]
+    },
+    {
+      "title": "Course Schedule II",
+      "category": "Graphs",
+      "difficulty": "Medium",
+      "id": "course-schedule-ii",
+      "statement": "You are given an array `prerequisites` where `prerequisites[i] = [a, b]` indicates that you **must** take course `b` first if you want to take course `a`.\n\n* For example, the pair `[0, 1]`, indicates that to take course `0` you have to first take course `1`.\n\nThere are a total of `numCourses` courses you are required to take, labeled from `0` to `numCourses - 1`. \n\nReturn a valid ordering of courses you can take to finish all courses. If there are many valid answers, return **any** of them. If it's not possible to finish all courses, return an **empty array**.\n\n**Example 1:**\n\n```go\nInput: numCourses = 3, prerequisites = [[1,0]]\n\nOutput: [0,1,2]\n```\n\nExplanation: We must ensure that course 0 is taken before course 1.\n\n**Example 2:**\n\n```go\nInput: numCourses = 3, prerequisites = [[0,1],[1,2],[2,0]]\n\nOutput: []\n```\n\nExplanation: It's impossible to finish all courses.\n\n**Constraints:**\n* `1 <= numCourses <= 1000`\n* `0 <= prerequisites.length <= 1000`\n* All `prerequisite` pairs are **unique**.",
+      "starterCode": "func findOrder(numCourses int, prerequisites [][]int) []int {\n    \n}\n",
+      "referenceCode": "func findOrder(numCourses int, prerequisites [][]int) []int {\n    prereq := make(map[int][]int)\n    for c := 0; c < numCourses; c++ {\n        prereq[c] = []int{}\n    }\n    for _, pre := range prerequisites {\n        crs, pre := pre[0], pre[1]\n        prereq[crs] = append(prereq[crs], pre)\n    }\n\n    output := []int{}\n    visit, cycle := make(map[int]bool), make(map[int]bool)\n\n    var dfs func(crs int) bool\n    dfs = func(crs int) bool {\n        if cycle[crs] {\n            return false\n        }\n        if visit[crs] {\n            return true\n        }\n\n        cycle[crs] = true\n        for _, pre := range prereq[crs] {\n            if dfs(pre) == false {\n                return false\n            }\n        }\n        delete(cycle, crs)\n        visit[crs] = true\n        output = append(output, crs)\n        return true\n    }\n\n    for c := 0; c < numCourses; c++ {\n        if dfs(c) == false {\n            return []int{}\n        }\n    }\n    return output\n}\n",
+      "customTestCases": [
+        "numCourses=3\nprerequisites=[[1,0]]",
+        "numCourses=3\nprerequisites=[[0,1],[1,2],[2,0]]"
+      ]
+    },
+    {
+      "title": "Redundant Connection",
+      "category": "Graphs",
+      "difficulty": "Medium",
+      "id": "redundant-connection",
+      "statement": "You are given a connected **undirected graph** with `n` nodes labeled from `1` to `n`. Initially, it contained no cycles and consisted of `n-1` edges.\n\nWe have now added one additional edge to the graph. The edge has two **different** vertices chosen from `1` to `n`, and was not an edge that previously existed in the graph.\n\nThe graph is represented as an array `edges` of length `n` where `edges[i] = [ai, bi]` represents an edge between nodes `ai` and `bi` in the graph.\n\nReturn an edge that can be removed so that the graph is still a connected non-cyclical graph. If there are multiple answers, return the edge that appears last in the input `edges`.\n\n**Example 1:**\n\n```go\nInput: edges = [[1,2],[1,3],[3,4],[2,4]]\n\nOutput: [2,4]\n```\n\n**Example 2:**\n\n```go\nInput: edges = [[1,2],[1,3],[1,4],[3,4],[4,5]]\n\nOutput: [3,4]\n```\n\n**Constraints:**\n* `n == edges.length`\n* `3 <= n <= 1000`\n* `1 <= edges[i][0] < edges[i][1] <= edges.length`\n* There are no repeated edges and no self-loops in the input.",
+      "starterCode": "func findRedundantConnection(edges [][]int) []int {\n    \n}\n",
+      "referenceCode": "func findRedundantConnection(edges [][]int) []int {\n    par := make([]int, len(edges)+1)\n    for i := 0; i < len(par); i++ {\n        par[i] = i\n    }\n    rank := make([]int, len(edges)+1)\n    for i := 0; i < len(rank); i++ {\n        rank[i] = 1\n    }\n\n    var find func(n int) int\n    find = func(n int) int {\n        p := par[n]\n        for p != par[p] {\n            par[p] = par[par[p]]\n            p = par[p]\n        }\n        return p\n    }\n\n    var union func(n1, n2 int) bool\n    union = func(n1, n2 int) bool {\n        p1, p2 := find(n1), find(n2)\n\n        if p1 == p2 {\n            return false\n        }\n        if rank[p1] > rank[p2] {\n            par[p2] = p1\n            rank[p1] += rank[p2]\n        } else {\n            par[p1] = p2\n            rank[p2] += rank[p1]\n        }\n        return true\n    }\n\n    for _, edge := range edges {\n        n1, n2 := edge[0], edge[1]\n        if !union(n1, n2) {\n            return []int{n1, n2}\n        }\n    }\n    return []int{}\n}\n",
+      "customTestCases": [
+        "edges=[[1,2],[1,3],[3,4],[2,4]]",
+        "edges=[[1,2],[1,3],[1,4],[3,4],[4,5]]"
+      ]
+    },
+    {
+      "title": "Word Ladder",
+      "category": "Graphs",
+      "difficulty": "Hard",
+      "id": "word-ladder",
+      "statement": "You are given two words, `beginWord` and `endWord`, and also a list of words `wordList`. All of the given words are of the same length, consisting of lowercase English letters, and are all distinct.\n\nYour goal is to transform `beginWord` into `endWord` by following the rules:\n    \n* You may transform `beginWord` to any word within `wordList`, provided that at exactly one position the words have a different character, and the rest of the positions have the same characters.\n* You may repeat the previous step with the new word that you obtain, and you may do this as many times as needed.\n\nReturn the **minimum number of words within the transformation sequence** needed to obtain the `endWord`, or `0` if no such sequence exists.\n\n**Example 1:**\n\n```go\nInput: beginWord = \"cat\", endWord = \"sag\", wordList = [\"bat\",\"bag\",\"sag\",\"dag\",\"dot\"]\n\nOutput: 4\n```\n\nExplanation: The transformation sequence is `\"cat\" -> \"bat\" -> \"bag\" -> \"sag\"`.\n\n**Example 2:**\n\n```go\nInput: beginWord = \"cat\", endWord = \"sag\", wordList = [\"bat\",\"bag\",\"sat\",\"dag\",\"dot\"]\n\nOutput: 0\n```\n\nExplanation: There is no possible transformation sequence from `\"cat\"` to `\"sag\"` since the word `\"sag\"` is not in the wordList.\n\n**Constraints:**\n* `1 <= beginWord.length <= 10`\n* `1 <= wordList.length <= 100`",
+      "starterCode": "func ladderLength(beginWord string, endWord string, wordList []string) int {\n    \n}\n",
+      "referenceCode": "func ladderLength(beginWord string, endWord string, wordList []string) int {\n    endWordExists := false\n    for _, word := range wordList {\n        if word == endWord {\n            endWordExists = true\n            break\n        }\n    }\n    if !endWordExists {\n        return 0\n    }\n\n    nei := make(map[string][]string)\n    wordList = append(wordList, beginWord)\n    for _, word := range wordList {\n        for j := 0; j < len(word); j++ {\n            pattern := word[:j] + \"*\" + word[j+1:]\n            nei[pattern] = append(nei[pattern], word)\n        }\n    }\n\n    visit := make(map[string]bool)\n    visit[beginWord] = true\n    q := []string{beginWord}\n    res := 1\n\n    for len(q) > 0 {\n        qLen := len(q)\n        for i := 0; i < qLen; i++ {\n            word := q[0]\n            q = q[1:]\n\n            if word == endWord {\n                return res\n            }\n            for j := 0; j < len(word); j++ {\n                pattern := word[:j] + \"*\" + word[j+1:]\n                for _, neiWord := range nei[pattern] {\n                    if !visit[neiWord] {\n                        visit[neiWord] = true\n                        q = append(q, neiWord)\n                    }\n                }\n            }\n        }\n        res++\n    }\n    return 0\n}\n",
+      "customTestCases": [
+        "beginWord=\"cat\"\nendWord=\"sag\"\nwordList=[\"bat\",\"bag\",\"sag\",\"dag\",\"dot\"]",
+        "beginWord=\"cat\"\nendWord=\"sag\"\nwordList=[\"bat\",\"bag\",\"sat\",\"dag\",\"dot\"]"
+      ]
+    },
+    {
+      "title": "Network Delay Time",
+      "category": "Advanced Graphs",
+      "difficulty": "Medium",
+      "id": "network-delay-time",
+      "statement": "You are given a network of `n` directed nodes, labeled from `1` to `n`. You are also given `times`, a list of directed edges where `times[i] = (ui, vi, ti)`. \n    \n* `ui` is the source node (an integer from `1` to `n`)\n* `vi` is the target node (an integer from `1` to `n`)\n* `ti` is the time it takes for a signal to travel from the source to the target node (an integer greater than or equal to `0`).\n\nYou are also given an integer `k`, representing the node that we will send a signal from.\n\nReturn the **minimum** time it takes for all of the `n` nodes to receive the signal. If it is impossible for all the nodes to receive the signal, return `-1` instead.\n\n**Example 1:**\n\n```go\nInput: times = [[1,2,1],[2,3,1],[1,4,4],[3,4,1]], n = 4, k = 1\n\nOutput: 3\n```\n\n**Example 2:**\n\n```go\nInput: times = [[1,2,1],[2,3,1]], n = 3, k = 2\n\nOutput: -1\n```\n\n**Constraints:**\n* `1 <= k <= n <= 100`\n* `1 <= times.length <= 1000`",
+      "starterCode": "func networkDelayTime(times [][]int, n int, k int) int {\n    \n}\n",
+      "referenceCode": "func networkDelayTime(times [][]int, n int, k int) int {\n    edges := make(map[int][][2]int)\n    for _, time := range times {\n        u, v, w := time[0], time[1], time[2]\n        edges[u] = append(edges[u], [2]int{v, w})\n    }\n\n    minHeap := &MinHeap{}\n    heap.Init(minHeap)\n    heap.Push(minHeap, [2]int{0, k})\n    visit := make(map[int]bool)\n    t := 0\n\n    for minHeap.Len() > 0 {\n        item := heap.Pop(minHeap).([2]int)\n        w1, n1 := item[0], item[1]\n\n        if visit[n1] {\n            continue\n        }\n        visit[n1] = true\n        t = w1\n\n        for _, edge := range edges[n1] {\n            n2, w2 := edge[0], edge[1]\n            if !visit[n2] {\n                heap.Push(minHeap, [2]int{w1 + w2, n2})\n            }\n        }\n    }\n\n    if len(visit) == n {\n        return t\n    }\n    return -1\n}\n\ntype MinHeap [][2]int\n\nfunc (h MinHeap) Len() int           { return len(h) }\nfunc (h MinHeap) Less(i, j int) bool { return h[i][0] < h[j][0] }\nfunc (h MinHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }\n\nfunc (h *MinHeap) Push(x interface{}) {\n\t*h = append(*h, x.([2]int))\n}\n\nfunc (h *MinHeap) Pop() interface{} {\n\told := *h\n\tn := len(old)\n\tx := old[n-1]\n\t*h = old[0 : n-1]\n\treturn x\n}\n",
+      "customTestCases": [
+        "times=[[1,2,1],[2,3,1],[1,4,4],[3,4,1]]\nn=4\nk=1",
+        "times=[[1,2,1],[2,3,1]]\nn=3\nk=2"
+      ]
+    },
+    {
+      "title": "Reconstruct Flight Path",
+      "category": "Advanced Graphs",
+      "difficulty": "Hard",
+      "id": "reconstruct-flight-path",
+      "statement": "You are given a list of flight tickets `tickets` where `tickets[i] = [from_i, to_i]` represent the source airport and the destination airport. \n\nEach `from_i` and `to_i` consists of three uppercase English letters.\n\nReconstruct the itinerary in order and return it.\n\nAll of the tickets belong to someone who originally departed from `\"JFK\"`. Your objective is to reconstruct the flight path that this person took, assuming each ticket was used exactly once.\n\nIf there are multiple valid flight paths, return the lexicographically smallest one.\n* For example, the itinerary `[\"JFK\", \"SEA\"]` has a smaller lexical order than `[\"JFK\", \"SFO\"]`.\n\nYou may assume all the tickets form at least one valid flight path.\n\n**Example 1:**\n\n```go\nInput: tickets = [[\"BUF\",\"HOU\"],[\"HOU\",\"SEA\"],[\"JFK\",\"BUF\"]]\n\nOutput: [\"JFK\",\"BUF\",\"HOU\",\"SEA\"]\n```\n\n**Example 2:**\n\n```go\nInput: tickets = [[\"HOU\",\"JFK\"],[\"SEA\",\"JFK\"],[\"JFK\",\"SEA\"],[\"JFK\",\"HOU\"]]\n\nOutput: [\"JFK\",\"HOU\",\"JFK\",\"SEA\",\"JFK\"]\n```\n\nExplanation: Another possible reconstruction is `[\"JFK\",\"SEA\",\"JFK\",\"HOU\",\"JFK\"]` but it is lexicographically larger.\n\n**Constraints:**\n* `1 <= tickets.length <= 300`\n* `from_i != to_i`",
+      "starterCode": "func findItinerary(tickets [][]string) []string {\n    \n}\n",
+      "referenceCode": "func findItinerary(tickets [][]string) []string {\n    adj := make(map[string][]string)\n    for _, ticket := range tickets {\n        src:= ticket[0]\n        adj[src] = []string{}\n    }\n    res := []string{}\n\n    for _, ticket := range tickets {\n        src, dst := ticket[0], ticket[1]\n        adj[src] = append(adj[src], dst)\n    }\n\n    for key := range adj {\n        sort.Strings(adj[key])\n    }\n\n    var dfs func(adj map[string][]string, result []string, src string)\n    dfs = func(adj map[string][]string, result []string, src string) {\n        if destinations, exists := adj[src]; exists {\n            destCopy := make([]string, len(destinations))\n            copy(destCopy, destinations)\n\n            for len(destCopy) > 0 {\n                dest := destCopy[0]\n                adj[src] = adj[src][1:]\n                dfs(adj, res, dest)\n                destCopy = make([]string, len(adj[src]))\n                copy(destCopy, adj[src])\n            }\n        }\n        res = append(res, src)\n    }\n\n    dfs(adj, res, \"JFK\")\n\n    for i, j := 0, len(res)-1; i < j; i, j = i+1, j-1 {\n        res[i], res[j] = res[j], res[i]\n    }\n\n    if len(res) != len(tickets)+1 {\n        return []string{}\n    }\n    return res\n}\n",
+      "customTestCases": [
+        "tickets=[[\"BUF\",\"HOU\"],[\"HOU\",\"SEA\"],[\"JFK\",\"BUF\"]]",
+        "tickets=[[\"HOU\",\"JFK\"],[\"SEA\",\"JFK\"],[\"JFK\",\"SEA\"],[\"JFK\",\"HOU\"]]"
+      ]
+    },
+    {
+      "title": "Min Cost to Connect Points",
+      "category": "Advanced Graphs",
+      "difficulty": "Medium",
+      "id": "min-cost-to-connect-points",
+      "statement": "You are given a 2-D integer array `points`, where `points[i] = [xi, yi]`. Each `points[i]` represents a distinct point on a 2-D plane.\n\nThe cost of connecting two points `[xi, yi]` and `[xj, yj]` is the **manhattan distance** between the two points, i.e. `|xi - xj| + |yi - yj|`.\n\nReturn the minimum cost to connect all points together, such that there exists exactly one path between each pair of points.\n\n**Example 1:**\n\n```go\nInput: points = [[0,0],[2,2],[3,3],[2,4],[4,2]]\n\nOutput: 10\n```\n\n**Constraints:**\n* `1 <= points.length <= 1000`\n* `-1,000,000 <= xi, yi <= 1,000,000`\n* All pairs `(xi, yi)` are distinct.",
+      "starterCode": "func minCostConnectPoints(points [][]int) int {\n    \n}\n",
+      "referenceCode": "func minCostConnectPoints(points [][]int) int {\n    n := len(points)\n    adj := make(map[int][][2]int)\n    for i := 0; i < n; i++ {\n        adj[i] = [][2]int{}\n    }\n\n    for i := 0; i < n; i++ {\n        x1, y1 := points[i][0], points[i][1]\n        for j := i + 1; j < n; j++ {\n            x2, y2 := points[j][0], points[j][1]\n            dist := abs(x1-x2) + abs(y1-y2)\n            adj[i] = append(adj[i], [2]int{dist, j})\n            adj[j] = append(adj[j], [2]int{dist, i})\n        }\n    }\n\n    res := 0\n    visit := make(map[int]bool)\n    minH := &MinHeap{}\n    heap.Init(minH)\n    heap.Push(minH, [2]int{0, 0})\n\n    for len(visit) < n {\n        item := heap.Pop(minH).([2]int)\n        cost, i := item[0], item[1]\n\n        if visit[i] {\n            continue\n        }\n        res += cost\n        visit[i] = true\n\n        for _, neighbor := range adj[i] {\n            neiCost, nei := neighbor[0], neighbor[1]\n            if !visit[nei] {\n                heap.Push(minH, [2]int{neiCost, nei})\n            }\n        }\n    }\n    return res\n}\n\nfunc abs(x int) int {\n    if x < 0 {\n        return -x\n    }\n    return x\n}\n\ntype MinHeap [][2]int\n\nfunc (h MinHeap) Len() int           { return len(h) }\nfunc (h MinHeap) Less(i, j int) bool { return h[i][0] < h[j][0] }\nfunc (h MinHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }\n\nfunc (h *MinHeap) Push(x interface{}) {\n    *h = append(*h, x.([2]int))\n}\n\nfunc (h *MinHeap) Pop() interface{} {\n    old := *h\n    n := len(old)\n    x := old[n-1]\n    *h = old[0 : n-1]\n    return x\n}\n",
+      "customTestCases": [
+        "points=[[0,0],[2,2],[3,3],[2,4],[4,2]]"
+      ]
+    },
+    {
+      "title": "Swim in Rising Water",
+      "category": "Advanced Graphs",
+      "difficulty": "Hard",
+      "id": "swim-in-rising-water",
+      "statement": "You are given a square 2-D matrix of distinct integers `grid` where each integer `grid[i][j]` represents the elevation at position `(i, j)`.\n\nRain starts to fall at time = `0`, which causes the water level to rise. At time `t`, the water level across the entire grid is `t`.\n\nYou may swim either horizontally or vertically in the grid between two adjacent squares if the original elevation of both squares is less than or equal to the water level at time `t`.\n\nStarting from the top left square `(0, 0)`, return the minimum amount of time it will take until it is possible to reach the bottom right square `(n - 1, n - 1)`.\n\n**Example 1:**\n\n```go\nInput: grid = [[0,1],[2,3]]\n\nOutput: 3\n```\n\nExplanation: For a path to exist to the bottom right square `grid[1][1]` the water elevation must be at least `3`. At time `t = 3`, the water level is `3`.\n\n**Example 2:**\n\n```go\nInput: grid = [\n  [0,1,2,10],\n  [9,14,4,13],\n  [12,3,8,15],\n  [11,5,7,6]\n]\n\nOutput: 8\n```\n\nExplanation: The water level must be at least `8` to reach the bottom right square. The path is `[0, 1, 2, 4, 8, 7, 6]`.\n\n**Constraints:**\n* `grid.length == grid[i].length`\n* `1 <= grid.length <= 50`\n* `0 <= grid[i][j] < n^2`",
+      "starterCode": "func swimInWater(grid [][]int) int {\n    \n}\n",
+      "referenceCode": "func swimInWater(grid [][]int) int {\n    n := len(grid)\n    visit := make(map[[2]int]bool)\n    minH := &MinHeap{}\n    heap.Init(minH)\n    heap.Push(minH, [3]int{grid[0][0], 0, 0})\n    directions := [][2]int{{0, 1}, {0, -1}, {1, 0}, {-1, 0}}\n    visit[[2]int{0, 0}] = true\n\n    for minH.Len() > 0 {\n        item := heap.Pop(minH).([3]int)\n        t, r, c := item[0], item[1], item[2]\n\n        if r == n-1 && c == n-1 {\n            return t\n        }\n\n        for _, dir := range directions {\n            dr, dc := dir[0], dir[1]\n            neiR, neiC := r+dr, c+dc\n\n            if neiR < 0 ||\n                neiC < 0 ||\n                neiR == n ||\n                neiC == n ||\n                visit[[2]int{neiR, neiC}] {\n                continue\n            }\n            visit[[2]int{neiR, neiC}] = true\n            heap.Push(minH, [3]int{max(t, grid[neiR][neiC]), neiR, neiC})\n        }\n    }\n    return 0\n}\n\ntype MinHeap [][3]int\n\nfunc (h MinHeap) Len() int           { return len(h) }\nfunc (h MinHeap) Less(i, j int) bool { return h[i][0] < h[j][0] }\nfunc (h MinHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }\n\nfunc (h *MinHeap) Push(x interface{}) {\n\t*h = append(*h, x.([3]int))\n}\n\nfunc (h *MinHeap) Pop() interface{} {\n\told := *h\n\tn := len(old)\n\tx := old[n-1]\n\t*h = old[0 : n-1]\n\treturn x\n}\n",
+      "customTestCases": [
+        "grid=[[0,1],[2,3]]",
+        "grid=[[0,1,2,10],[9,14,4,13],[12,3,8,15],[11,5,7,6]]"
+      ]
+    },
+    {
+      "title": "Cheapest Flights Within K Stops",
+      "category": "Advanced Graphs",
+      "difficulty": "Medium",
+      "id": "cheapest-flight-path",
+      "statement": "There are `n` airports, labeled from `0` to `n - 1`, which are connected by some flights. You are given an array `flights` where `flights[i] = [from_i, to_i, price_i]` represents a one-way flight from airport `from_i` to airport `to_i` with cost `price_i`. You may assume there are no duplicate flights and no flights from an airport to itself.\n\nYou are also given three integers `src`, `dst`, and `k` where:\n\n* `src` is the starting airport\n* `dst` is the destination airport\n* `src != dst`\n* `k` is the maximum number of stops you can make (not including `src` and `dst`)\n\nReturn **the cheapest price** from `src` to `dst` with at most `k` stops, or return `-1` if it is impossible.\n\n**Example 1:**\n\n```go\nInput: n = 4, flights = [[0,1,200],[1,2,100],[1,3,300],[2,3,100]], src = 0, dst = 3, k = 1\n\nOutput: 500\n```\n\nExplanation:\nThe optimal path with at most 1 stop from airport 0 to 3 is shown in red, with total cost `200 + 300 = 500`.\nNote that the path `[0 -> 1 -> 2 -> 3]` costs only 400, and thus is cheaper, but it requires 2 stops, which is more than k.\n\n**Example 2:**\n\n```go\nInput: n = 3, flights = [[1,0,100],[1,2,200],[0,2,100]], src = 1, dst = 2, k = 1\n\nOutput: 200\n```\n\nExplanation:\nThe optimal path with at most 1 stop from airport 1 to 2 is shown in red and has cost `200`.\n\n**Constraints:**\n* `1 <= n <= 100`\n* `fromi != toi`\n* `1 <= pricei <= 1000`\n* `0 <= src, dst, k < n`",
+      "starterCode": "func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {\n    \n}\n",
+      "referenceCode": "func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {\n    prices := make([]float64, n)\n    for i := 0; i < n; i++ {\n        prices[i] = math.Inf(1)\n    }\n    prices[src] = 0\n\n    for i := 0; i < k+1; i++ {\n        tmpPrices := make([]float64, len(prices))\n        copy(tmpPrices, prices)\n\n        for _, flight := range flights {\n            s, d, p := flight[0], flight[1], flight[2]\n            if prices[s] == math.Inf(1) {\n                continue\n            }\n            if prices[s]+float64(p) < tmpPrices[d] {\n                tmpPrices[d] = prices[s] + float64(p)\n            }\n        }\n        prices = tmpPrices\n    }\n\n    if prices[dst] == math.Inf(1) {\n        return -1\n    }\n    return int(prices[dst])\n}\n",
+      "customTestCases": [
+        "n=4\nflights=[[0,1,200],[1,2,100],[1,3,300],[2,3,100]]\nsrc=0\ndst=3\nk=1",
+        "n=3\nflights=[[1,0,100],[1,2,200],[0,2,100]]\nsrc=1\ndst=2\nk=1"
+      ]
+    },
+    {
+      "title": "Min Cost Climbing Stairs",
+      "category": "1-D Dynamic Programming",
+      "difficulty": "Easy",
+      "id": "min-cost-climbing-stairs",
+      "statement": "You are given an array of integers `cost` where `cost[i]` is the cost of taking a step from the `ith` floor of a staircase. After paying the cost, you can step to either the `(i + 1)th` floor or the `(i + 2)th` floor.\n\nYou may choose to start at the index `0` or the index `1` floor.\n\nReturn the minimum cost to reach the top of the staircase, i.e. just past the last index in `cost`.\n\n**Example 1:**\n\n```go\nInput: cost = [1,2,3]\n\nOutput: 2\n```\n\nExplanation: We can start at index = `1` and pay the cost of `cost[1] = 2` and take two steps to reach the top. The total cost is `2`.\n\n**Example 2:**\n\n```go\nInput: cost = [1,2,1,2,1,1,1]\n\nOutput: 4\n```\n\nExplanation: Start at index = `0`.\n* Pay the cost of `cost[0] = 1` and take two steps to reach index = `2`.\n* Pay the cost of `cost[2] = 1` and take two steps to reach index = `4`.\n* Pay the cost of `cost[4] = 1` and take two steps to reach index = `6`.\n* Pay the cost of `cost[6] = 1` and take one step to reach the top.\n* The total cost is `4`.\n\n**Constraints:**\n* `2 <= cost.length <= 100`\n* `0 <= cost[i] <= 100`",
+      "starterCode": "func minCostClimbingStairs(cost []int) int {\n    \n}\n",
+      "referenceCode": "func minCostClimbingStairs(cost []int) int {\n    for i := len(cost) - 3; i >= 0; i-- {\n        cost[i] += min(cost[i+1], cost[i+2])\n    }\n    return min(cost[0], cost[1])\n}\n",
+      "customTestCases": [
+        "cost=[1,2,3]",
+        "cost=[1,2,1,2,1,1,1]"
+      ]
+    },
+    {
+      "title": "Partition Equal Subset Sum",
+      "category": "1-D Dynamic Programming",
+      "difficulty": "Medium",
+      "id": "partition-equal-subset-sum",
+      "statement": "You are given an array of positive integers `nums`.\n    \nReturn `true` if you can partition the array into two subsets, `subset1` and `subset2` where `sum(subset1) == sum(subset2)`. Otherwise, return `false`.\n\n**Example 1:**\n\n```go\nInput: nums = [1,2,3,4]\n\nOutput: true\n```\n\nExplanation: The array can be partitioned as `[1, 4]` and `[2, 3]`.\n\n**Example 2:**\n\n```go\nInput: nums = [1,2,3,4,5]\n\nOutput: false\n```\n\n**Constraints:**\n* `1 <= nums.length <= 100`\n* `1 <= nums[i] <= 50`",
+      "starterCode": "func canPartition(nums []int) bool {\n    \n}\n",
+      "referenceCode": "func canPartition(nums []int) bool {\n    sum := 0\n    for _, num := range nums {\n        sum += num\n    }\n    if sum%2 != 0 {\n        return false\n    }\n\n    dp := make(map[int]bool)\n    dp[0] = true\n    target := sum / 2\n\n    for i := len(nums) - 1; i >= 0; i-- {\n        nextDP := make(map[int]bool)\n        for t := range dp {\n            if (t + nums[i]) == target {\n                return true\n            }\n            nextDP[t+nums[i]] = true\n            nextDP[t] = true\n        }\n        dp = nextDP\n    }\n    return false\n}\n",
+      "customTestCases": [
+        "nums=[1,2,3,4]",
+        "nums=[1,2,3,4,5]"
+      ]
+    },
+    {
+      "title": "Best Time to Buy and Sell Stock with Cooldown",
+      "category": "2-D Dynamic Programming",
+      "difficulty": "Medium",
+      "id": "buy-and-sell-crypto-with-cooldown",
+      "statement": "You are given an integer array `prices` where `prices[i]` is the price of NeetCoin on the `ith` day.\n\nYou may buy and sell one NeetCoin multiple times with the following restrictions:\n* After you sell your NeetCoin, you cannot buy another one on the next day (i.e., there is a cooldown period of one day).\n* You may only own at most one NeetCoin at a time.\n\nYou may complete as many transactions as you like.\n\nReturn the **maximum profit** you can achieve.\n\n**Example 1:**\n\n```go\nInput: prices = [1,3,4,0,4]\n\nOutput: 6\n```\n\nExplanation: Buy on day 0 (price = 1) and sell on day 1 (price = 3), profit = 3-1 = 2. Then buy on day 3 (price = 0) and sell on day 4 (price = 4), profit = 4-0 = 4. Total profit is 2 + 4 = 6.\n\n**Example 2:**\n\n```go\nInput: prices = [1]\n\nOutput: 0\n```\n\n**Constraints:**\n* `1 <= prices.length <= 5000`\n* `0 <= prices[i] <= 1000`",
+      "starterCode": "func maxProfit(prices []int) int {\n    \n}\n",
+      "referenceCode": "func maxProfit(prices []int) int {\n    dp := make(map[[2]int]int)\n\n    var dfs func(i int, buying bool) int\n    dfs = func(i int, buying bool) int {\n        if i >= len(prices) {\n            return 0\n        }\n\n        buyingInt := 0\n        if buying {\n            buyingInt = 1\n        }\n        key := [2]int{i, buyingInt}\n\n        if val, exists := dp[key]; exists {\n            return val\n        }\n\n        cooldown := dfs(i+1, buying)\n        if buying {\n            buy := dfs(i+1, !buying) - prices[i]\n            dp[key] = max(buy, cooldown)\n        } else {\n            sell := dfs(i+2, !buying) + prices[i]\n            dp[key] = max(sell, cooldown)\n        }\n        return dp[key]\n    }\n\n    return dfs(0, true)\n}\n",
+      "customTestCases": [
+        "prices=[1,3,4,0,4]",
+        "prices=[1]"
+      ]
+    },
+    {
+      "title": "Coin Change II",
+      "category": "2-D Dynamic Programming",
+      "difficulty": "Medium",
+      "id": "coin-change-ii",
+      "statement": "You are given an integer array `coins` representing coins of different denominations (e.g. 1 dollar, 5 dollars, etc) and an integer `amount` representing a target amount of money.\n\nReturn the number of distinct combinations that total up to `amount`. If it's impossible to make up the amount, return `0`.\n\nYou may assume that you have an unlimited number of each coin and that each value in `coins` is unique.\n\n**Example 1:**\n\n```go\nInput: amount = 4, coins = [1,2,3]\n\nOutput: 4\n```\n\nExplanation:\n* 1+1+1+1 = 4\n* 1+1+2 = 4\n* 2+2 = 4\n* 1+3 = 4\n\n**Example 2:**\n\n```go\nInput: amount = 7, coins = [2,4]\n\nOutput: 0\n```\n\n**Constraints:**\n* `1 <= coins.length <= 100`\n* `1 <= coins[i] <= 5000`\n* `0 <= amount <= 5000`",
+      "starterCode": "func change(amount int, coins []int) int {\n    \n}\n",
+      "referenceCode": "func change(amount int, coins []int) int {\n    dp := make([]int, amount+1)\n    dp[0] = 1\n\n    for i := len(coins) - 1; i >= 0; i-- {\n        nextDP := make([]int, amount+1)\n        nextDP[0] = 1\n\n        for a := 1; a <= amount; a++ {\n            nextDP[a] = dp[a]\n            if a-coins[i] >= 0 {\n                nextDP[a] += nextDP[a-coins[i]]\n            }\n        }\n        dp = nextDP\n    }\n    return dp[amount]\n}\n",
+      "customTestCases": [
+        "amount=4\ncoins=[1,2,3]",
+        "amount=7\ncoins=[2,4]"
+      ]
+    },
+    {
+      "title": "Target Sum",
+      "category": "2-D Dynamic Programming",
+      "difficulty": "Medium",
+      "id": "target-sum",
+      "statement": "You are given an array of integers `nums` and an integer `target`.\n\nFor each number in the array, you can choose to either add or subtract it to a total sum.\n\n* For example, if `nums = [1, 2]`, one possible sum would be `\"+1-2=-1\"`.\n\nIf `nums=[1,1]`, there are **two different ways** to sum the input numbers to get a sum of `0`: `\"+1-1\"` and `\"-1+1\"`.\n\nReturn the number of **different ways** that you can build the expression such that the total sum equals `target`.\n\n**Example 1:**\n\n```go\nInput: nums = [2,2,2], target = 2\n\nOutput: 3\n```\nExplanation: There are 3 different ways to sum the input numbers to get a sum of 2.\n`+2 +2 -2 = 2`\n`+2 -2 +2 = 2`\n`-2 +2 +2 = 2`\n\n**Constraints:**\n* `1 <= nums.length <= 20`\n* `0 <= nums[i] <= 1000`\n* `-1000 <= target <= 1000`",
+      "starterCode": "func findTargetSumWays(nums []int, target int) int {\n    \n}\n",
+      "referenceCode": "func findTargetSumWays(nums []int, target int) int {\n    dp := make(map[[2]int]int)\n\n    var backtrack func(i, total int) int\n    backtrack = func(i, total int) int {\n        if i == len(nums) {\n            if total == target {\n                return 1\n            }\n            return 0\n        }\n\n        key := [2]int{i, total}\n        if val, exists := dp[key]; exists {\n            return val\n        }\n\n        dp[key] = backtrack(i+1, total+nums[i]) + backtrack(i+1, total-nums[i])\n        return dp[key]\n    }\n\n    return backtrack(0, 0)\n}\n",
+      "customTestCases": [
+        "nums=[2,2,2]\ntarget=4"
+      ]
+    },
+    {
+      "title": "Interleaving String",
+      "category": "2-D Dynamic Programming",
+      "difficulty": "Medium",
+      "id": "interleaving-string",
+      "statement": "You are given three strings `s1`, `s2`, and `s3`. Return `true` if `s3` is formed by **interleaving** `s1` and `s2` together or `false` otherwise.\n\n**Interleaving** two strings `s` and `t` is done by dividing `s` and `t` into `n` and `m` substrings respectively, where the following conditions are met\n\n* `|n - m| <= 1`, i.e. the difference between the number of substrings of `s` and `t` is at most `1`.\n* `s = s1 + s2 + ... + sn`\n* `t = t1 + t2 + ... + tm`\n* **Interleaving** `s` and `t` is  `s1 + t1 + s2 + t2 + ...` or `t1 + s1 + t2 + s2 + ...`\n\nYou may assume that `s1`, `s2` and `s3` consist of lowercase English letters.\n\n**Example 1:**\n\n```go\nInput: s1 = \"aaaa\", s2 = \"bbbb\", s3 = \"aabbbbaa\"\n\nOutput: true\n```\n\nExplanation: We can split `s1` into `[\"aa\", \"aa\"]`, `s2` can remain as `\"bbbb\"` and `s3` is formed by interleaving `[\"aa\", \"aa\"]` and `\"bbbb\"`.\n\n**Example 2:**\n\n```go\nInput: s1 = \"\", s2 = \"\", s3 = \"\"\n\nOutput: true\n```\n\n**Example 3:**\n\n```go\nInput: s1 = \"abc\", s2 = \"xyz\", s3 = \"abxzcy\"\n\nOutput: false\n```\n\nExplanation: We can't split `s3` into `[\"ab\", \"xz\", \"cy\"]` as the order of characters is not maintained.\n\n**Constraints:**\n* `0 <= s1.length, s2.length <= 100`\n* `0 <= s3.length <= 200`",
+      "starterCode": "func isInterleave(s1 string, s2 string, s3 string) bool {\n    \n}\n",
+      "referenceCode": "func isInterleave(s1 string, s2 string, s3 string) bool {\n    if len(s1)+len(s2) != len(s3) {\n        return false\n    }\n\n    dp := make([][]bool, len(s1)+1)\n    for i := 0; i <= len(s1); i++ {\n        dp[i] = make([]bool, len(s2)+1)\n    }\n    dp[len(s1)][len(s2)] = true\n\n    for i := len(s1); i >= 0; i-- {\n        for j := len(s2); j >= 0; j-- {\n            if i < len(s1) && s1[i] == s3[i+j] && dp[i+1][j] {\n                dp[i][j] = true\n            }\n            if j < len(s2) && s2[j] == s3[i+j] && dp[i][j+1] {\n                dp[i][j] = true\n            }\n        }\n    }\n    return dp[0][0]\n}\n",
+      "customTestCases": [
+        "s1=\"aaaa\"\ns2=\"bbbb\"\ns3=\"aabbbbaa\"",
+        "s1=\"\"\ns2=\"\"\ns3=\"\"",
+        "s1=\"abc\"\ns2=\"xyz\"\ns3=\"abxzcy\""
+      ]
+    },
+    {
+      "title": "Longest Increasing Path in Matrix",
+      "category": "2-D Dynamic Programming",
+      "difficulty": "Hard",
+      "id": "longest-increasing-path-in-matrix",
+      "statement": "You are given a 2-D grid of integers `matrix`, where each integer is greater than or equal to `0`.\n\nReturn the length of the longest strictly increasing path within `matrix`.\n\nFrom each cell within the path, you can move either horizontally or vertically. You **may not** move **diagonally**.\n\n**Example 1:**\n\n```go\nInput: matrix = [[5,5,3],[2,3,6],[1,1,1]]\n\nOutput: 4\n```\n\nExplanation: The longest increasing path is `[1, 2, 3, 6]` or `[1, 2, 3, 5]`.\n\n**Example 2:**\n\n```go\nInput: matrix = [[1,2,3],[2,1,4],[7,6,5]]\n\nOutput: 7\n```\n\nExplanation: The longest increasing path is `[1, 2, 3, 4, 5, 6, 7]`.\n\n**Constraints:**\n* `1 <= matrix.length, matrix[i].length <= 100`",
+      "starterCode": "func longestIncreasingPath(matrix [][]int) int {\n    \n}\n",
+      "referenceCode": "func longestIncreasingPath(matrix [][]int) int {\n    rows, cols := len(matrix), len(matrix[0])\n    dp := make(map[[2]int]int)\n\n    var dfs func(r, c, prevVal int) int\n    dfs = func(r, c, prevVal int) int {\n        if r < 0 || r == rows || c < 0 || c == cols || matrix[r][c] <= prevVal {\n            return 0\n        }\n        if val, exists := dp[[2]int{r, c}]; exists {\n            return val\n        }\n\n        res := 1\n        res = max(res, 1+dfs(r+1, c, matrix[r][c]))\n        res = max(res, 1+dfs(r-1, c, matrix[r][c]))\n        res = max(res, 1+dfs(r, c+1, matrix[r][c]))\n        res = max(res, 1+dfs(r, c-1, matrix[r][c]))\n        dp[[2]int{r, c}] = res\n        return res\n    }\n\n    for r := 0; r < rows; r++ {\n        for c := 0; c < cols; c++ {\n            dfs(r, c, -1)\n        }\n    }\n\n    maxVal := 0\n    for _, val := range dp {\n        maxVal = max(maxVal, val)\n    }\n    return maxVal\n}\n",
+      "customTestCases": [
+        "matrix=[[5,5,3],[2,3,6],[1,1,1]]",
+        "matrix=[[1,2,3],[2,1,4],[7,6,5]]"
+      ]
+    },
+    {
+      "title": "Distinct Subsequences",
+      "category": "2-D Dynamic Programming",
+      "difficulty": "Hard",
+      "id": "count-subsequences",
+      "statement": "You are given two strings `s` and `t`, both consisting of english letters.\n    \nReturn the number of distinct **subsequences** of `s` which are equal to `t`.\n\n**Example 1:**\n\n```go\nInput: s = \"caaat\", t = \"cat\"\n\nOutput: 3\n```\n\nExplanation: There are 3 ways you can generate `\"cat\"` from `s`.\n* (c)aa(at)\n* (c)a(a)a(t)\n* (ca)aa(t)\n\n**Example 2:**\n\n```go\nInput: s = \"xxyxy\", t = \"xy\"\n\nOutput: 5\n```\n\nExplanation: There are 5 ways you can generate `\"xy\"` from `s`.\n* (x)x(y)xy\n* (x)xyx(y)\n* x(x)(y)xy\n* x(x)yx(y)\n* xxy(x)(y)\n\n**Constraints:**\n* `1 <= s.length, t.length <= 1000`\n* `s` and `t` consist of English letters.",
+      "starterCode": "func numDistinct(s string, t string) int {\n    \n}\n",
+      "referenceCode": "func numDistinct(s string, t string) int {\n    cache := make(map[[2]int]int)\n\n    for i := 0; i <= len(s); i++ {\n        cache[[2]int{i, len(t)}] = 1\n    }\n    for j := 0; j < len(t); j++ {\n        cache[[2]int{len(s), j}] = 0\n    }\n\n    for i := len(s) - 1; i >= 0; i-- {\n        for j := len(t) - 1; j >= 0; j-- {\n            if s[i] == t[j] {\n                cache[[2]int{i, j}] = cache[[2]int{i + 1, j + 1}] + cache[[2]int{i + 1, j}]\n            } else {\n                cache[[2]int{i, j}] = cache[[2]int{i + 1, j}]\n            }\n        }\n    }\n    return cache[[2]int{0, 0}]\n}\n",
+      "customTestCases": [
+        "s=\"caaat\"\nt=\"cat\"",
+        "s=\"xxyxy\"\nt=\"xy\""
+      ]
+    },
+    {
+      "title": "Edit Distance",
+      "category": "2-D Dynamic Programming",
+      "difficulty": "Medium",
+      "id": "edit-distance",
+      "statement": "You are given two strings `word1` and `word2`, each consisting of lowercase English letters.\n\nYou are allowed to perform three operations on `word1` an unlimited number of times:\n\n* Insert a character at any position\n* Delete a character at any position\n* Replace a character at any position\n\nReturn the minimum number of operations to make `word1` equal `word2`.\n\n**Example 1:**\n\n```go\nInput: word1 = \"monkeys\", word2 = \"money\"\n\nOutput: 2\n```\n\nExplanation:\n`monkeys` -> `monkey` (remove `s`)\n`monkey` -> `money`  (remove `k`)\n\n**Example 2:**\n\n```go\nInput: word1 = \"neatcdee\", word2 = \"neetcode\"\n\nOutput: 3\n```\n\nExplanation:\n`neatcdee` -> `neetcdee`  (replace `a` with `e`)\n`neetcdee` -> `neetcde`   (remove last `e`)\n`neetcde`  -> `neetcode`  (insert `o`)\n\n**Constraints:**\n* `0 <= word1.length, word2.length <= 100`\n* `word1` and `word2` consist of lowercase English letters.",
+      "starterCode": "func minDistance(word1 string, word2 string) int {\n    \n}\n",
+      "referenceCode": "func minDistance(word1 string, word2 string) int {\n    dp := make([][]int, len(word1)+1)\n    for i := 0; i <= len(word1); i++ {\n        dp[i] = make([]int, len(word2)+1)\n        for j := 0; j <= len(word2); j++ {\n            dp[i][j] = len(word1) + len(word2)\n        }\n    }\n\n    for j := 0; j <= len(word2); j++ {\n        dp[len(word1)][j] = len(word2) - j\n    }\n    for i := 0; i <= len(word1); i++ {\n        dp[i][len(word2)] = len(word1) - i\n    }\n\n    for i := len(word1) - 1; i >= 0; i-- {\n        for j := len(word2) - 1; j >= 0; j-- {\n            if word1[i] == word2[j] {\n                dp[i][j] = dp[i+1][j+1]\n            } else {\n                dp[i][j] = 1 + min(dp[i+1][j], dp[i][j+1], dp[i+1][j+1])\n            }\n        }\n    }\n    return int(dp[0][0])\n}\n",
+      "customTestCases": [
+        "word1=\"monkeys\"\nword2=\"money\"",
+        "word1=\"neatcdee\"\nword2=\"neetcode\""
+      ]
+    },
+    {
+      "title": "Burst Balloons",
+      "category": "2-D Dynamic Programming",
+      "difficulty": "Hard",
+      "id": "burst-balloons",
+      "statement": "You are given an array of integers `nums` of size `n`. The `ith` element represents a balloon with an integer value of `nums[i]`. You must burst all of the balloons.\n\nIf you burst the `ith` balloon, you will receive `nums[i - 1] * nums[i] * nums[i + 1]` coins. If `i - 1` or `i + 1` goes out of bounds of the array, then assume the out of bounds value is 1.\n\nReturn the maximum number of coins you can receive by bursting all of the balloons.\n\n**Example 1:**\n\n```go\nInput: nums = [4,2,3,7]\n\nOutput: 143\n\nExplanation:\nnums = [4,2,3,7] --> [4,3,7] --> [4,7] --> [7] --> []\ncoins =  4*2*3    +   4*3*7   +  1*4*7  + 1*7*1 = 143\n```\n\n**Constraints:**\n* `n == nums.length`\n* `1 <= n <= 300`\n* `0 <= nums[i] <= 100`",
+      "starterCode": "func maxCoins(nums []int) int {\n    \n}\n",
+      "referenceCode": "func maxCoins(nums []int) int {\n    cache := make(map[[2]int]int)\n    nums = append([]int{1}, nums...)\n    nums = append(nums, 1)\n\n    for offset := 2; offset < len(nums); offset++ {\n        for left := 0; left < len(nums)-offset; left++ {\n            right := left + offset\n            for pivot := left + 1; pivot < right; pivot++ {\n                coins := nums[left] * nums[pivot] * nums[right]\n                leftVal := 0\n                if val, exists := cache[[2]int{left, pivot}]; exists {\n                    leftVal = val\n                }\n                rightVal := 0\n                if val, exists := cache[[2]int{pivot, right}]; exists {\n                    rightVal = val\n                }\n                coins += leftVal + rightVal\n\n                currentMax := 0\n                if val, exists := cache[[2]int{left, right}]; exists {\n                    currentMax = val\n                }\n                cache[[2]int{left, right}] = max(coins, currentMax)\n            }\n        }\n    }\n\n    result := 0\n    if val, exists := cache[[2]int{0, len(nums) - 1}]; exists {\n        result = val\n    }\n    return result\n}\n",
+      "customTestCases": [
+        "nums=[4,2,3,7]"
+      ]
+    },
+    {
+      "title": "Regular Expression Matching",
+      "category": "2-D Dynamic Programming",
+      "difficulty": "Hard",
+      "id": "regular-expression-matching",
+      "statement": "You are given an input string `s` consisting of lowercase english letters, and a pattern `p` consisting of lowercase english letters, as well as `'.'`, and `'*'` characters.\n\nReturn `true` if the pattern matches the **entire** input string, otherwise return `false`.\n\n* `'.'` Matches any single character\n* `'*'` Matches zero or more of the preceding element.\n\n**Example 1:**\n\n```go\nInput: s = \"aa\", p = \".b\"\n\nOutput: false\n```\n\nExplanation: Regardless of which character we choose for the `'.'` in the pattern, we cannot match the second character in the input string.\n\n**Example 2:**\n\n```go\nInput: s = \"nnn\", p = \"n*\"\n\nOutput: true\n```\n\nExplanation: `'*'` means zero or more of the preceding element, `'n'`. We choose `'n'` to repeat three times.\n\n**Example 3:**\n\n```go\nInput: s = \"xyz\", p = \".*z\"\n\nOutput: true\n```\n\nExplanation: The pattern `\".*\"` means zero or more of any character, so we choose `\"..\"` to match `\"xy\"` and `\"z\"` to match `\"z\"`.\n\n**Constraints:**\n* `1 <= s.length <= 20`\n* `1 <= p.length <= 20`\n* Each appearance of `'*'`, will be preceded by a valid character or `'.'`.",
+      "starterCode": "func isMatch(s string, p string) bool {\n    \n}\n",
+      "referenceCode": "func isMatch(s string, p string) bool {\n    cache := make([][]bool, len(s)+1)\n    for i := 0; i <= len(s); i++ {\n        cache[i] = make([]bool, len(p)+1)\n    }\n    cache[len(s)][len(p)] = true\n\n    for i := len(s); i >= 0; i-- {\n        for j := len(p) - 1; j >= 0; j-- {\n            match := i < len(s) && (s[i] == p[j] || p[j] == '.')\n\n            if (j+1) < len(p) && p[j+1] == '*' {\n                cache[i][j] = cache[i][j+2]\n                if match {\n                    cache[i][j] = cache[i+1][j] || cache[i][j]\n                }\n            } else if match {\n                cache[i][j] = cache[i+1][j+1]\n            }\n        }\n    }\n    return cache[0][0]\n}\n",
+      "customTestCases": [
+        "s=\"aa\"\np=\".b\"",
+        "s=\"nnn\"\np=\"n*\"",
+        "s=\"xyz\"\np=\".*z\""
+      ]
+    },
+    {
+      "title": "Jump Game II",
+      "category": "Greedy",
+      "difficulty": "Medium",
+      "id": "jump-game-ii",
+      "statement": "You are given an array of integers `nums`, where `nums[i]` represents the maximum length of a jump towards the right from index `i`. For example, if you are at `nums[i]`, you can jump to any index `i + j` where:\n\n* `j <= nums[i]`\n* `i + j < nums.length`\n\nYou are initially positioned at `nums[0]`.\n\nReturn the minimum number of jumps to reach the last position in the array (index `nums.length - 1`). You may assume there is always a valid answer.\n\n**Example 1:**\n\n```go\nInput: nums = [2,4,1,1,1,1]\n\nOutput: 2\n```\n\nExplanation: Jump from index `0` to index `1`, then jump from index `1` to the last index.\n\n**Example 2:**\n\n```go\nInput: nums = [2,1,2,1,0]\n\nOutput: 2\n```\n\n**Constraints:**\n* `1 <= nums.length <= 1000`\n* `0 <= nums[i] <= 100`",
+      "starterCode": "func jump(nums []int) int {\n    \n}\n",
+      "referenceCode": "func jump(nums []int) int {\n    l, r := 0, 0\n    res := 0\n\n    for r < (len(nums) - 1) {\n        maxJump := 0\n        for i := l; i <= r; i++ {\n            maxJump = max(maxJump, i+nums[i])\n        }\n        l = r + 1\n        r = maxJump\n        res++\n    }\n    return res\n}\n",
+      "customTestCases": [
+        "nums=[2,4,1,1,1,1]",
+        "nums=[2,1,2,1,0]"
+      ]
+    },
+    {
+      "title": "Gas Station",
+      "category": "Greedy",
+      "difficulty": "Medium",
+      "id": "gas-station",
+      "statement": "There are `n` gas stations along a circular route. You are given two integer arrays `gas` and `cost` where:\n\n* `gas[i]` is the amount of gas at the `ith` station.\n* `cost[i]` is the amount of gas needed to travel from the `ith` station to the `(i + 1)th` station. (The last station is connected to the first station)\n\nYou have a car that can store an unlimited amount of gas, but you begin the journey with an empty tank at one of the gas stations.\n\nReturn the starting gas station's index such that you can travel around the circuit once in the clockwise direction. If it's impossible, then return `-1`.\n\nIt's guaranteed that at most one solution exists.\n\n**Example 1:**\n\n```go\nInput: gas = [1,2,3,4], cost = [2,2,4,1]\n\nOutput: 3\n```\n\nExplanation: Start at station 3 and fill up with `gas[3] = 4`, so tank = 4.\nTravel from station 3 to station 0, spending `cost[3] = 1`, then fill `gas[0] = 1`, so tank = 4 - 1 + 1 = 4.\nTravel from station 0 to station 1, spending `cost[0] = 2`, then fill `gas[1] = 2`, so tank = 4 - 2 + 2 = 4.\nTravel from station 1 to station 2, spending `cost[1] = 2`, then fill `gas[2] = 3`, so tank = 4 - 2 + 3 = 5.\nTravel from station 2 back to station 3, spending `cost[2] = 4`, so tank = 5 - 4 = 1.\nThe circuit is complete, so return 3.\n\n**Example 2:**\n\n```go\nInput: gas = [1,2,3], cost = [2,3,2]\n\nOutput: -1\n```\n\nExplanation:\nYou cannot start at station 0 or 1 because neither has enough gas to travel to the next station.\nIf you start at station 2, fill `gas[2] = 3`, so tank = 3.\nTravel from station 2 to station 0, spending `cost[2] = 2`, then fill `gas[0] = 1`, so tank = 3 - 2 + 1 = 2.\nTravel from station 0 to station 1, spending `cost[0] = 2`, then fill `gas[1] = 2`, so tank = 2 - 2 + 2 = 2.\nTo travel from station 1 to station 2, you need `cost[1] = 3` gas, but the tank only has 2.\nSo no starting station can complete the circuit, and the answer is -1.\n\n**Constraints:**\n* `1 <= gas.length == cost.length <= 100000`\n* `0 <= gas[i], cost[i] <= 1000`",
+      "starterCode": "func canCompleteCircuit(gas []int, cost []int) int {\n    \n}\n",
+      "referenceCode": "func canCompleteCircuit(gas []int, cost []int) int {\n    gasSum := 0\n    costSum := 0\n    for i := 0; i < len(gas); i++ {\n        gasSum += gas[i]\n        costSum += cost[i]\n    }\n    if gasSum < costSum {\n        return -1\n    }\n\n    total := 0\n    res := 0\n    for i := 0; i < len(gas); i++ {\n        total += (gas[i] - cost[i])\n        if total < 0 {\n            total = 0\n            res = i + 1\n        }\n    }\n    return res\n}\n",
+      "customTestCases": [
+        "gas=[1,2,3,4]\ncost=[2,2,4,1]",
+        "gas=[1,2,3]\ncost=[2,3,2]"
+      ]
+    },
+    {
+      "title": "Hand of Straights",
+      "category": "Greedy",
+      "difficulty": "Medium",
+      "id": "hand-of-straights",
+      "statement": "You are given an integer array `hand` where `hand[i]` is the value written on the `ith` card and an integer `groupSize`.\n    \nYou want to rearrange the cards into groups so that each group is of size `groupSize`, and card values are consecutively increasing by `1`.\n\nReturn `true` if it's possible to rearrange the cards in this way, otherwise, return `false`.\n\n**Example 1:**\n\n```go\nInput: hand = [1,2,4,2,3,5,3,4], groupSize = 4\n\nOutput: true\n```\n\nExplanation: The cards can be rearranged as `[1,2,3,4]` and `[2,3,4,5]`.\n\n**Example 2:**\n\n```go\nInput: hand = [1,2,3,3,4,5,6,7], groupSize = 4\n\nOutput: false\n```\n\nExplanation: The closest we can get is `[1,2,3,4]` and `[3,5,6,7]`, but the cards in the second group are not consecutive.\n\n**Constraints:**\n* `1 <= hand.length <= 10000`\n* `0 <= hand[i] <= 1000`\n* `1 <= groupSize <= hand.length`",
+      "starterCode": "func isNStraightHand(hand []int, groupSize int) bool {\n    \n}\n",
+      "referenceCode": "func isNStraightHand(hand []int, groupSize int) bool {\n    if len(hand)%groupSize != 0 {\n        return false\n    }\n\n    count := make(map[int]int)\n    for _, n := range hand {\n        count[n]++\n    }\n\n    minH := &MinHeap{}\n    heap.Init(minH)\n    for key := range count {\n        heap.Push(minH, key)\n    }\n\n    for minH.Len() > 0 {\n        first := (*minH)[0]\n        for i := first; i < first+groupSize; i++ {\n            if _, exists := count[i]; !exists {\n                return false\n            }\n            count[i]--\n            if count[i] == 0 {\n                if i != (*minH)[0] {\n                    return false\n                }\n                heap.Pop(minH)\n            }\n        }\n    }\n    return true\n}\n\ntype MinHeap []int\n\nfunc (h MinHeap) Len() int           { return len(h) }\nfunc (h MinHeap) Less(i, j int) bool { return h[i] < h[j] }\nfunc (h MinHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }\n\nfunc (h *MinHeap) Push(x interface{}) {\n    *h = append(*h, x.(int))\n}\n\nfunc (h *MinHeap) Pop() interface{} {\n    old := *h\n    n := len(old)\n    x := old[n-1]\n    *h = old[0 : n-1]\n    return x\n}\n",
+      "customTestCases": [
+        "hand=[1,2,4,2,3,5,3,4]\ngroupSize=4",
+        "hand=[1,2,3,3,4,5,6,7]\ngroupSize=4"
+      ]
+    },
+    {
+      "title": "Merge Triplets to Form Target",
+      "category": "Greedy",
+      "difficulty": "Medium",
+      "id": "merge-triplets-to-form-target",
+      "statement": "You are given a 2D array of integers `triplets`, where `triplets[i] = [ai, bi, ci]` represents the `ith` **triplet**. You are also given an array of integers `target = [x, y, z]` which is the triplet we want to obtain.\n\nTo obtain `target`, you may apply the following operation on `triplets` zero or more times:\n\nChoose two **different** triplets `triplets[i]` and `triplets[j]` and update `triplets[j]` to become `[max(ai, aj), max(bi, bj), max(ci, cj)]`.\n    * E.g. if `triplets[i] = [1, 3, 1]` and `triplets[j] = [2, 1, 2]`, `triplets[j]` will be updated to `[max(1, 2), max(3, 1), max(1, 2)] = [2, 3, 2]`.\n\nReturn `true` if it is possible to obtain `target` as an **element** of `triplets`, or `false` otherwise.\n\n**Example 1:**\n\n```go\nInput: triplets = [[1,2,3],[7,1,1]], target = [7,2,3]\n\nOutput: true\n```\n\nExplanation:\nChoose the first and second triplets, update the second triplet to be [max(1, 7), max(2, 1), max(3, 1)] = [7, 2, 3].\n\n**Example 2:**\n\n```go\nInput: triplets = [[2,5,6],[1,4,4],[5,7,5]], target = [5,4,6]\n\nOutput: false\n```\n\n**Constraints:**\n* `1 <= triplets.length <= 1000`\n* `1 <= ai, bi, ci, x, y, z <= 100`",
+      "starterCode": "func mergeTriplets(triplets [][]int, target []int) bool {\n    \n}\n",
+      "referenceCode": "func mergeTriplets(triplets [][]int, target []int) bool {\n    good := make(map[int]bool)\n\n    for _, t := range triplets {\n        if t[0] > target[0] || t[1] > target[1] || t[2] > target[2] {\n            continue\n        }\n        for i, v := range t {\n            if v == target[i] {\n                good[i] = true\n            }\n        }\n    }\n    return len(good) == 3\n}\n",
+      "customTestCases": [
+        "triplets=[[1,2,3],[7,1,1]]\ntarget=[7,2,3]",
+        "triplets=[[2,5,6],[1,4,4],[5,7,5]]\ntarget=[5,4,6]"
+      ]
+    },
+    {
+      "title": "Partition Labels",
+      "category": "Greedy",
+      "difficulty": "Medium",
+      "id": "partition-labels",
+      "statement": "You are given a string `s` consisting of lowercase english letters.\n\nWe want to split the string into as many substrings as possible, while ensuring that each letter appears in at most one substring.\n\nReturn a list of integers representing the size of these substrings in the order they appear in the string.\n\n**Example 1:**\n\n```go\nInput: s = \"xyxxyzbzbbisl\"\n\nOutput: [5, 5, 1, 1, 1]\n```\n\nExplanation: The string can be split into `[\"xyxxy\", \"zbzbb\", \"i\", \"s\", \"l\"]`.\n\n**Example 2:**\n\n```go\nInput: s = \"abcabc\"\n\nOutput: [6]\n```\n\n**Constraints:**\n* `1 <= s.length <= 100`",
+      "starterCode": "func partitionLabels(s string) []int {\n    \n}\n",
+      "referenceCode": "func partitionLabels(s string) []int {\n    count := make(map[rune]int)\n    res := []int{}\n    i, length := 0, len(s)\n\n    for j := 0; j < length; j++ {\n        c := rune(s[j])\n        count[c] = j\n    }\n\n    curLen := 0\n    goal := 0\n    for i < length {\n        c := rune(s[i])\n        goal = max(goal, count[c])\n        curLen++\n\n        if goal == i {\n            res = append(res, curLen)\n            curLen = 0\n        }\n        i++\n    }\n    return res\n}\n",
+      "customTestCases": [
+        "s=\"xyxxyzbzbbisl\"",
+        "s=\"abcabc\""
+      ]
+    },
+    {
+      "title": "Valid Parenthesis String",
+      "category": "Greedy",
+      "difficulty": "Medium",
+      "id": "valid-parenthesis-string",
+      "statement": "You are given a string `s` which contains only three types of characters: `'('`, `')'` and `'*'`.\n\nReturn `true` if `s` is **valid**, otherwise return `false`.\n\nA string is valid if it follows all of the following rules:\n\n* Every left parenthesis `'('` must have a corresponding right parenthesis `')'`.\n* Every right parenthesis `')'` must have a corresponding left parenthesis `'('`.\n* Left parenthesis `'('` must go before the corresponding right parenthesis `')'`.\n* A `'*'` could be treated as a right parenthesis `')'` character or a left parenthesis `'('` character, or as an empty string `\"\"`.\n\n**Example 1:**\n\n```go\nInput: s = \"((**)\"\n\nOutput: true\n```\n\nExplanation: One of the `'*'` could be a `')'` and the other could be an empty string.\n\n**Example 2:**\n\n```go\nInput: s = \"(((*)\"\n\nOutput: false\n```\n\nExplanation: The string is not valid because there is an extra `'('` at the beginning, regardless of the extra `'*'`.\n\n**Constraints:**\n* `1 <= s.length <= 100`",
+      "starterCode": "func checkValidString(s string) bool {\n    \n}\n",
+      "referenceCode": "func checkValidString(s string) bool {\n    leftMin, leftMax := 0, 0\n\n    for _, c := range s {\n        if c == '(' {\n            leftMin, leftMax = leftMin+1, leftMax+1\n        } else if c == ')' {\n            leftMin, leftMax = leftMin-1, leftMax-1\n        } else {\n            leftMin, leftMax = leftMin-1, leftMax+1\n        }\n\n        if leftMax < 0 {\n            return false\n        }\n        if leftMin < 0 {\n            leftMin = 0\n        }\n    }\n    return leftMin == 0\n}\n",
+      "customTestCases": [
+        "s=\"((**)\"",
+        "s=\"(((*)\""
+      ]
+    },
+    {
+      "title": "Minimum Interval to Include Each Query",
+      "category": "Intervals",
+      "difficulty": "Hard",
+      "id": "minimum-interval-including-query",
+      "statement": "You are given a 2D integer array `intervals`, where `intervals[i] = [left_i, right_i]` represents the `ith` interval starting at `left_i` and ending at `right_i` **(inclusive)**.\n\nYou are also given an integer array of query points `queries`. The result of `query[j]` is the **length of the shortest interval** `i` such that `left_i <= queries[j] <= right_i`. If no such interval exists, the result of this query is `-1`.\n\nReturn an array `output` where `output[j]` is the result of `query[j]`.\n\nNote: The length of an interval is calculated as `right_i - left_i + 1`.\n\n**Example 1:**\n\n```go\nInput: intervals = [[1,3],[2,3],[3,7],[6,6]], queries = [2,3,1,7,6,8]\n\nOutput: [2,2,3,5,1,-1]\n```\n\nExplanation:\n- Query = 2: The interval `[2,3]` is the smallest one containing 2, it's length is 2.\n- Query = 3: The interval `[2,3]` is the smallest one containing 3, it's length is 2.\n- Query = 1: The interval `[1,3]` is the smallest one containing 1, it's length is 3.\n- Query = 7: The interval `[3,7]` is the smallest one containing 7, it's length is 5.\n- Query = 6: The interval `[6,6]` is the smallest one containing 6, it's length is 1.\n- Query = 8: There is no interval containing 8.\n\n**Constraints:**\n* `1 <= intervals.length <= 100000`\n* `1 <= queries.length <= 100000`\n* `1 <= left_i <= right_i <= 10000000`\n* `1 <= queries[j] <= 10000000`",
+      "starterCode": "func minInterval(intervals [][]int, queries []int) []int {\n    \n}\n",
+      "referenceCode": "func minInterval(intervals [][]int, queries []int) []int {\n    sort.Slice(intervals, func(i, j int) bool {\n        if intervals[i][0] == intervals[j][0] {\n            return intervals[i][1] < intervals[j][1]\n        }\n        return intervals[i][0] < intervals[j][0]\n    })\n\n    sortedQueries := make([]int, len(queries))\n    copy(sortedQueries, queries)\n    sort.Ints(sortedQueries)\n\n    res := make(map[int]int)\n    h := &MinHeap{}\n    heap.Init(h)\n    i := 0\n\n    for _, q := range sortedQueries {\n        for i < len(intervals) && intervals[i][0] <= q {\n            l, r := intervals[i][0], intervals[i][1]\n            heap.Push(h, []int{r - l + 1, r})\n            i++\n        }\n\n        for h.Len() > 0 && (*h)[0][1] < q {\n            heap.Pop(h)\n        }\n\n        if h.Len() > 0 {\n            res[q] = (*h)[0][0]\n        } else {\n            res[q] = -1\n        }\n    }\n\n    output := make([]int, len(queries))\n    for idx, q := range queries {\n        output[idx] = res[q]\n    }\n\n    return output\n}\n\ntype MinHeap [][]int\n\nfunc (h MinHeap) Len() int            { return len(h) }\nfunc (h MinHeap) Less(i, j int) bool  { return h[i][0] < h[j][0] }\nfunc (h MinHeap) Swap(i, j int)       { h[i], h[j] = h[j], h[i] }\n\nfunc (h *MinHeap) Push(x interface{}) {\n\t*h = append(*h, x.([]int))\n}\n\nfunc (h *MinHeap) Pop() interface{} {\n    old := *h\n    n := len(old)\n    x := old[n-1]\n    *h = old[:n-1]\n    return x\n}\n",
+      "customTestCases": [
+        "intervals=[[1,3],[2,3],[3,7],[6,6]]\nqueries=[2,3,1,7,6,8]"
+      ]
+    },
+    {
+      "title": "Non-Cyclical Number",
+      "category": "Math & Geometry",
+      "difficulty": "Easy",
+      "id": "non-cyclical-number",
+      "statement": "A **non-cyclical number** is an integer defined by the following algorithm:\n\n* Given a positive integer, replace it with the sum of the squares of its digits.\n* Repeat the above step until the number equals `1`, or it **loops infinitely in a cycle** which does not include `1`.\n* If it stops at `1`, then the number is a **non-cyclical number**.\n\nGiven a positive integer `n`, return `true` if it is a **non-cyclical number**, otherwise return `false`.\n\n**Example 1:**\n\n```go\nInput: n = 100\n\nOutput: true\n```\n\nExplanation: `1² + 0² + 0² = 1`\n\n**Example 2:**\n\n```go\nInput: n = 101\n\nOutput: false\n```\n\nExplanation:\n`1² + 0² + 1² = 2`\n`2² = 4`\n`4² = 16`\n`1² + 6² = 37`\n`3² + 7² = 58`\n`5² + 8² = 89`\n`8² + 9² = 145`\n`1² + 4² + 5² = 42`\n`4² + 2² = 20`\n`2² + 0² = 4` (This number has already been seen)\n\n**Constraints:**\n* `1 <= n <= 1000`",
+      "starterCode": "func isHappy(n int) bool {\n    \n}\n",
+      "referenceCode": "func isHappy(n int) bool {\n\tslow, fast := n, sumSquareDigits(n)\n\n\tfor slow != fast {\n\t\tfast = sumSquareDigits(fast)\n\t\tfast = sumSquareDigits(fast)\n\t\tslow = sumSquareDigits(slow)\n\t}\n\n\tif fast == 1 {\n\t\treturn true\n\t}\n\treturn false\n}\n\nfunc sumSquareDigits(n int) int {\n\toutput := 0\n\tfor n != 0 {\n\t\tdigit := n % 10\n\t\toutput += digit * digit\n\t\tn = n / 10\n\t}\n\treturn output\n}\n",
+      "customTestCases": [
+        "n=100",
+        "n=101"
+      ]
+    },
+    {
+      "title": "Plus One",
+      "category": "Math & Geometry",
+      "difficulty": "Easy",
+      "id": "plus-one",
+      "statement": "You are given an integer array `digits`, where each `digits[i]` is the `ith` digit of a large integer. It is ordered from most significant to least significant digit, and it will not contain any leading zero.\n\nReturn the digits of the given integer after incrementing it by one.\n\n**Example 1:**\n\n```go\nInput: digits = [1,2,3,4]\n\nOutput: [1,2,3,5]\n```\n\nExplanation `1234` + `1` = `1235`.\n\n**Example 2:**\n\n```go\nInput: digits = [9,9,9]\n\nOutput: [1,0,0,0]\n```\n\n**Constraints:**\n* `1 <= digits.length <= 100`\n* `0 <= digits[i] <= 9`",
+      "starterCode": "func plusOne(digits []int) []int {\n    \n}\n",
+      "referenceCode": "func plusOne(digits []int) []int {\n\tone := 1\n\ti := 0\n\n\tfor l, r := 0, len(digits)-1; l < r; l, r = l+1, r-1 {\n\t\tdigits[l], digits[r] = digits[r], digits[l]\n\t}\n\n\tfor one != 0 {\n\t\tif i < len(digits) {\n\t\t\tif digits[i] == 9 {\n\t\t\t\tdigits[i] = 0\n\t\t\t} else {\n\t\t\t\tdigits[i] += 1\n\t\t\t\tone = 0\n\t\t\t}\n\t\t} else {\n\t\t\tdigits = append(digits, one)\n\t\t\tone = 0\n\t\t}\n\t\ti++\n\t}\n\n\tfor l, r := 0, len(digits)-1; l < r; l, r = l+1, r-1 {\n\t\tdigits[l], digits[r] = digits[r], digits[l]\n\t}\n\n\treturn digits\n}\n",
+      "customTestCases": [
+        "digits=[1,2,3,4]",
+        "digits=[9,9,9]"
+      ]
+    },
+    {
+      "title": "Pow(x, n)",
+      "category": "Math & Geometry",
+      "difficulty": "Medium",
+      "id": "pow-x-n",
+      "statement": "`Pow(x, n)` is a mathematical function to calculate the value of `x` raised to the power of `n` (i.e., `x^n`).\n    \nGiven a floating-point value `x` and an integer value `n`, implement the `myPow(x, n)` function, which calculates `x` raised to the power `n`.\n\nYou may **not** use any built-in library functions.\n\n**Example 1:**\n\n```go\nInput: x = 2.00000, n = 5\n\nOutput: 32.00000\n```\n\n**Example 2:**\n\n```go\nInput: x = 1.10000, n = 10\n\nOutput: 2.59374\n```\n\n**Example 3:**\n\n```go\nInput: x = 2.00000, n = -3\n\nOutput: 0.12500\n```\n\n**Constraints:**\n* `-100.0 < x < 100.0`\n* `-2^31 <= n <= 2^31 - 1`\n* `n` is an integer.\n* Either `x` is not zero or `n > 0`.\n* `-10^4 <= x^n <= 10^4`",
+      "starterCode": "func myPow(x float64, n int) float64 {\n    \n}\n",
+      "referenceCode": "func myPow(x float64, n int) float64 {\n\tvar helper func(float64, int) float64\n\thelper = func(x float64, n int) float64 {\n\t\tif x == 0 {\n\t\t\treturn 0\n\t\t}\n\t\tif n == 0 {\n\t\t\treturn 1\n\t\t}\n\n\t\tres := helper(x*x, n/2)\n\t\tif n%2 != 0 {\n\t\t\treturn x * res\n\t\t}\n\t\treturn res\n\t}\n\n\tres := helper(x, abs(n))\n\tif n >= 0 {\n\t\treturn res\n\t}\n\treturn 1 / res\n}\n\nfunc abs(n int) int {\n\tif n < 0 {\n\t\treturn -n\n\t}\n\treturn n\n}\n",
+      "customTestCases": [
+        "x=2.00000\nn=5",
+        "x=1.10000\nn=10",
+        "x=2.00000\nn=-3"
+      ]
+    },
+    {
+      "title": "Multiply Strings",
+      "category": "Math & Geometry",
+      "difficulty": "Medium",
+      "id": "multiply-strings",
+      "statement": "You are given two strings `num1` and `num2` that represent non-negative integers.\n\nReturn the product of `num1` and `num2` in the form of a string.\n\nAssume that neither `num1` nor `num2` contain any leading zero, unless they are the number `0` itself.\n\n**Note**: You can not use any built-in library to convert the inputs directly into integers.\n\n**Example 1:**\n\n```go\nInput: num1 = \"3\", num2 = \"4\"\n\nOutput: \"12\"\n```\n\n**Example 2:**\n\n```go\nInput: num1 = \"111\", num2 = \"222\"\n\nOutput: \"24642\"\n```\n\n**Constraints:**\n* `1 <= num1.length, num2.length <= 200`\n* `num1` and `num2` consist of digits only.",
+      "starterCode": "func multiply(num1 string, num2 string) string {\n    \n}\n",
+      "referenceCode": "func multiply(num1 string, num2 string) string {\n\tif num1 == \"0\" || num2 == \"0\" {\n\t\treturn \"0\"\n\t}\n\n\tres := make([]int, len(num1)+len(num2))\n\tnum1Rev := reverseString(num1)\n\tnum2Rev := reverseString(num2)\n\n\tfor i1 := 0; i1 < len(num1Rev); i1++ {\n\t\tfor i2 := 0; i2 < len(num2Rev); i2++ {\n\t\t\tdigit1 := int(num1Rev[i1] - '0')\n\t\t\tdigit2 := int(num2Rev[i2] - '0')\n\t\t\tdigit := digit1 * digit2\n\t\t\tres[i1+i2] += digit\n\t\t\tres[i1+i2+1] += res[i1+i2] / 10\n\t\t\tres[i1+i2] = res[i1+i2] % 10\n\t\t}\n\t}\n\tfor l, r := 0, len(res)-1; l < r; l, r = l+1, r-1 {\n\t\tres[l], res[r] = res[r], res[l]\n\t}\n\n\tbeg := 0\n\tfor beg < len(res) && res[beg] == 0 {\n\t\tbeg++\n\t}\n\n\tstrRes := \"\"\n\tfor _, v := range res[beg:] {\n\t\tstrRes += strconv.Itoa(v)\n\t}\n\treturn strRes\n}\n\nfunc reverseString(s string) string {\n\tb := []rune(s)\n\tfor l, r := 0, len(b)-1; l < r; l, r = l+1, r-1 {\n\t\tb[l], b[r] = b[r], b[l]\n\t}\n\treturn string(b)\n}\n",
+      "customTestCases": [
+        "num1=\"3\"\nnum2=\"4\"",
+        "num1=\"111\"\nnum2=\"222\""
+      ]
+    },
+    {
+      "title": "Detect Squares",
+      "category": "Math & Geometry",
+      "difficulty": "Medium",
+      "id": "count-squares",
+      "statement": "You are given a stream of points consisting of x-y coordinates on a 2-D plane. Points can be added and queried as follows:\n\n* **Add** - new points can be added to the stream into a data structure. Duplicate points are allowed and should be treated as separate points.\n* **Query** - Given a single query point, **count** the number of ways to choose three additional points from the data structure such that the three points and the query point form a **square**. The square must have all sides parallel to the x-axis and y-axis, i.e. no diagonal squares are allowed. Recall that a **square** must have four equal sides.\n\nImplement the `CountSquares` class:\n* `CountSquares()` Initializes the object.\n* `void add(int[] point)` Adds a new point `point = [x, y]`.\n* `int count(int[] point)` Counts the number of ways to form valid **squares** with point `point = [x, y]` as described above.\n\n**Example 1:**\n\n```go\nInput: \n[\"CountSquares\", \"add\", [[1, 1]], \"add\", [[2, 2]], \"add\", [[1, 2]], \"count\", [[2, 1]], \"count\", [[3, 3]], \"add\", [[2, 2]], \"count\", [[2, 1]]]\n       \nOutput:\n[null, null, null, null, 1, 0, null, 2]\n\nExplanation:\nCountSquares countSquares = new CountSquares();\ncountSquares.add([1, 1]);\ncountSquares.add([2, 2]);\ncountSquares.add([1, 2]);\n\ncountSquares.count([2, 1]);   // return 1.\ncountSquares.count([3, 3]);   // return 0.\ncountSquares.add([2, 2]);     // Duplicate points are allowed.\ncountSquares.count([2, 1]);   // return 2. \n```\n\n**Constraints:**\n* `point.length == 2`\n* `0 <= x, y <= 1000`",
+      "starterCode": "type CountSquares struct {\n    \n}\n\nfunc Constructor() CountSquares {\n    \n}\n\nfunc (this *CountSquares) Add(point []int)  {\n    \n}\n\nfunc (this *CountSquares) Count(point []int) int {\n    \n}\n",
+      "referenceCode": "type CountSquares struct {\n\tptsCount map[[2]int]int\n\tpts      [][2]int\n}\n\nfunc Constructor() CountSquares {\n\treturn CountSquares{\n\t\tptsCount: make(map[[2]int]int),\n\t\tpts:      make([][2]int, 0),\n\t}\n}\n\nfunc (this *CountSquares) Add(point []int) {\n\tpt := [2]int{point[0], point[1]}\n\tthis.ptsCount[pt]++\n\tthis.pts = append(this.pts, pt)\n}\n\nfunc (this *CountSquares) Count(point []int) int {\n\tres := 0\n\tpx, py := point[0], point[1]\n\n\tfor _, p := range this.pts {\n\t\tx, y := p[0], p[1]\n\t\tif abs(py-y) != abs(px-x) || x == px || y == py {\n\t\t\tcontinue\n\t\t}\n\t\tres += this.ptsCount[[2]int{x, py}] * this.ptsCount[[2]int{px, y}]\n\t}\n\treturn res\n}\n\nfunc abs(n int) int {\n\tif n < 0 {\n\t\treturn -n\n\t}\n\treturn n\n}\n",
+      "customTestCases": [
+        "[\"CountSquares\", \"add\", [[1, 1]], \"add\", [[2, 2]], \"add\", [[1, 2]], \"count\", [[2, 1]], \"count\", [[3, 3]], \"add\", [[2, 2]], \"count\", [[2, 1]]]"
+      ]
+    },
+    {
+      "title": "Single Number",
+      "category": "Bit Manipulation",
+      "difficulty": "Easy",
+      "id": "single-number",
+      "statement": "You are given a **non-empty** array of integers `nums`. Every integer appears twice except for one.\n\nReturn the integer that appears only once.\n\nYou must implement a solution with `O(n)` runtime complexity and use only `O(1)` extra space.\n\n**Example 1:**\n\n```go\nInput: nums = [3,2,3]\n\nOutput: 2\n```\n\n**Example 2:**\n\n```go\nInput: nums = [7,6,6,7,8]\n\nOutput: 8\n```\n\n**Constraints:**\n* `1 <= nums.length <= 10000`\n* `-10000 <= nums[i] <= 10000`",
+      "starterCode": "func singleNumber(nums []int) int {\n\n}\n",
+      "referenceCode": "func singleNumber(nums []int) int {\n\tres := 0\n\tfor _, n := range nums {\n\t\tres ^= n\n\t}\n\treturn res\n}\n",
+      "customTestCases": [
+        "nums=[3,2,3]",
+        "nums=[7,6,6,7,8]"
+      ]
+    },
+    {
+      "title": "Reverse Integer",
+      "category": "Bit Manipulation",
+      "difficulty": "Medium",
+      "id": "reverse-integer",
+      "statement": "You are given a signed 32-bit integer `x`.\n    \nReturn `x` after reversing each of its digits. After reversing, if `x` goes outside the signed 32-bit integer range `[-2^31, 2^31 - 1]`, then return `0` instead.\n\nSolve the problem without using integers that are outside the signed 32-bit integer range.\n\n**Example 1:**\n\n```go\nInput: x = 1234\n\nOutput: 4321\n```\n\n**Example 2:**\n\n```go\nInput: x = -1234\n\nOutput: -4321\n```\n\n**Example 3:**\n\n```go\nInput: x = 1234236467\n\nOutput: 0\n```\n\n**Constraints:**\n* `-2^31 <= x <= 2^31 - 1`",
+      "starterCode": "func reverse(x int) int {\n\n}\n",
+      "referenceCode": "func reverse(x int) int {\n\tconst MIN = -2147483648 // -2^31,\n\tconst MAX = 2147483647 //  2^31 - 1\n\n\tres := 0\n\tfor x != 0 {\n\t\tdigit := x % 10\n\t\tx /= 10\n\n\t\tif res > MAX/10 || (res == MAX/10 && digit > MAX%10) {\n\t\t\treturn 0\n\t\t}\n\t\tif res < MIN/10 || (res == MIN/10 && digit < MIN%10) {\n\t\t\treturn 0\n\t\t}\n\n\t\tres = res*10 + digit\n\t}\n\treturn res\n}\n",
+      "customTestCases": [
+        "x=1234",
+        "x=-1234",
+        "x=1234236467"
+      ]
+    }
+  ]
+}
