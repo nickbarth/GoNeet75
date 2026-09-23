@@ -4,7 +4,7 @@ import { promisify } from 'node:util';
 import snapshot from '../src/data/neet75-problems.json' with { type: 'json' };
 import { getThreeTestCases } from '../src/data/testCases.js';
 import { buildProgram, readProgramOutput } from '../src/lib/goProgram.js';
-import { matches } from '../src/lib/goProblemRunner.js';
+import { matches } from '../src/lib/resultMatcher.js';
 
 const exec = promisify(execFile);
 const runner = new URL('../.cache/yaegi-fixture-runner', import.meta.url).pathname;

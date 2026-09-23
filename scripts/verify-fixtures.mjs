@@ -2,7 +2,7 @@ import snapshot from '../src/data/neet75-problems.json' with { type: 'json' };
 import covered from '../src/data/covered-blind75.json' with { type: 'json' };
 import { getThreeTestCases } from '../src/data/testCases.js';
 import { buildProgram } from '../src/lib/goProgram.js';
-import { matches } from '../src/lib/goProblemRunner.js';
+import { matches } from '../src/lib/resultMatcher.js';
 
 const failures = [];
 const expectedActiveIds = new Set(`
